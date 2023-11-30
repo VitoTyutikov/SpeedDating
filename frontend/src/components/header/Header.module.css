@@ -1,0 +1,10 @@
+.NavLink {
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
