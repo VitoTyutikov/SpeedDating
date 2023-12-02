@@ -1,10 +1,8 @@
 package vito.speeddating.entity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,8 +13,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -76,8 +72,8 @@ public class UserEntity implements UserDetails {
     @Column
     boolean isAccountNonLocked=true;
 
-    @ManyToMany(mappedBy = "registeredUsers")
-    private List<EventEntity> events = new ArrayList<>();
+    // @ManyToMany(mappedBy = "registeredUsers")
+    // private List<EventEntity> events = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

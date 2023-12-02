@@ -8,13 +8,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import vito.speeddating.dto.EventDTO;
+import vito.speeddating.dto.RegisterUserToEventDTO;
 import vito.speeddating.entity.EventEntity;
+import vito.speeddating.entity.UserEntity;
 import vito.speeddating.service.EventService;
 
 @RestController
@@ -63,11 +65,31 @@ public class EventController {
 
     @CrossOrigin
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addNewEvent(@RequestBody EventDTO eventDTO) {
+    public EventEntity addNewEvent(@RequestBody EventDTO eventDTO) {
         // String username = getCurrentUserLogin();
         // if (username == "anonymousUser") {
-        //     return "Please login first";
+        // return "Please login first";
         // }
         return eventService.addNewEvent(eventDTO);
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/registerUserToEvent", method = RequestMethod.POST)
+    public boolean registerUserToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
+        return eventService.addUserToEvent(registerUserToEventDTO.getUserId(), registerUserToEventDTO.getEventId());
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/checkUserRegisteredToEvent", method = RequestMethod.POST)
+    public boolean checkUserRegisteredToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
+        return eventService.isUserRegisteredToEvent(registerUserToEventDTO.getUserId(),
+                registerUserToEventDTO.getEventId());
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/getUsersRegisteredToEvent", method = RequestMethod.GET)
+    public List<UserEntity> getUsersRegisteredToEvent(@RequestParam Long eventId) {
+        return eventService.getUsersRegisteredToEvent(eventId);
+    }
+
 }

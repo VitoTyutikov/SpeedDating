@@ -7,6 +7,7 @@ import Register from './components/register/Register';
 import Events from './components/events/Events';
 // import Settings from './components/settigns/Settings';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import UserProfile from './components/profile/UserProfile';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path='/profile' element={<Profile />} />
             <Route path='/messanges' element={<div>Messanges</div>} />
             <Route path='/events' element={<Events />} />
+            <Route path="/user/:id" element={<UserProfile/>} />
           </Routes>
         </div>
         {/* <div className='footer'> */}

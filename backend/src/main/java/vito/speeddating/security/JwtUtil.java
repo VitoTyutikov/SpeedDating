@@ -13,13 +13,10 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtUtil {
-    private SecretKey key = Jwts.SIG.HS512.key().build();
-    // private SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    SecretKey key = Jwts.SIG.HS512.key().build(); // or HS384.key() or HS512.key()
 
     public String extractUsername(String token) {
         try {
@@ -45,7 +42,9 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        // return
+        // Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
     }
 
     private boolean isTokenExpired(String token) {
@@ -56,7 +55,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         // String accessToken = createToken(claims, userDetails.getUsername(),
         // Duration.ofMinutes(1L), "ACCESS");
-        String accessToken = createToken(claims, userDetails.getUsername(), Duration.ofSeconds(20L), "ACCESS");
+        String accessToken = createToken(claims, userDetails.getUsername(), Duration.ofSeconds(5L), "ACCESS");
         String refreshToken = createToken(claims, userDetails.getUsername(), Duration.ofDays(30L), "REFRESH");
 
         Map<String, String> tokens = new HashMap<>();
@@ -73,7 +72,7 @@ public class JwtUtil {
                 .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + duration.toMillis()))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key)
                 .compact();
     }
 

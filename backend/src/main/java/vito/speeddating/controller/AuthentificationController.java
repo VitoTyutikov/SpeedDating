@@ -45,7 +45,13 @@ public class AuthentificationController {
     @RequestMapping(value = "/refresh", method = { RequestMethod.POST })
     public ResponseEntity<?> refreshTokens(@RequestBody TokenRequest tokenRequest) throws Exception {
         final String refreshToken = tokenRequest.getRefreshToken();
+        if (refreshToken == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Refresh token is missing");
+        }
         final String username = jwtTokenUtil.extractUsername(refreshToken);
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Refresh token is missing");
+        }
         final UserDetails userDetails = userService.loadUserByUsername(username);
         // validate the refresh token
         if (blackListTokenService.isBlackListed(refreshToken)

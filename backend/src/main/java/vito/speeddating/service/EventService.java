@@ -3,15 +3,13 @@ package vito.speeddating.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import vito.speeddating.dto.EventDTO;
 import vito.speeddating.entity.EventEntity;
+import vito.speeddating.entity.UserEntity;
 import vito.speeddating.repository.EventRepository;
-import vito.speeddating.security.JwtUtil;
 
 @Service
 public class EventService {
@@ -58,7 +56,7 @@ public class EventService {
     }
 
     @Transactional
-    public String addNewEvent(EventDTO eventDTO) {
+    public EventEntity addNewEvent(EventDTO eventDTO) {
         EventEntity event = new EventEntity();
         event.setTitle(eventDTO.getTitle());
         event.setEventDateTime(eventDTO.getEventDateTime());
@@ -67,7 +65,33 @@ public class EventService {
         // event.setUser(userService.findByUsername(username));
         // event.setRegisteredUsers(event.getRegisteredUsers());
         eventRepository.save(event);
-        System.out.println(event.toString());
-        return "Event added successfully";
+        // System.out.println(event.toString());
+        return event;
+    }
+
+    @Transactional
+    public boolean addUserToEvent(Long userId, Long eventId) {
+        EventEntity event = eventRepository.findById(eventId).orElse(null);
+        UserEntity user = userService.findById(userId);
+        if (event.getRegisteredUsers().contains(user)) {
+            return false;
+        }
+        event.getRegisteredUsers().add(user);
+        eventRepository.save(event);
+        return true;
+    }
+
+    public boolean isUserRegisteredToEvent(Long userId, Long eventId) {
+        EventEntity event = eventRepository.findById(eventId).orElse(null);
+        UserEntity user = userService.findById(userId);
+        if (event.getRegisteredUsers().contains(user)) {
+            return true;
+        }
+        return false;
+    }
+
+    public List<UserEntity> getUsersRegisteredToEvent(Long eventId) {
+        EventEntity event = eventRepository.findById(eventId).orElse(null);
+        return event.getRegisteredUsers();
     }
 }

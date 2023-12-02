@@ -26,7 +26,7 @@ function useUser() {
                 })
         }
     }, [isLoggedIn]);
-    CookiesService.setUsername(user?.username);
+    CookiesService.setUserId(user?.id);
     return user;
 }
 

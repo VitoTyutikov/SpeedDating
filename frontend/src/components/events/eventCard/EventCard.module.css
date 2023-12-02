@@ -1,3 +1,10 @@
+.event-card-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px; /* Adjust the gap as needed */
+}
+
 .event-card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -6,6 +13,8 @@
   margin: 20px auto; /* centers the card */
   display: block; /* makes the card behave like a block */
   width: 100%; /* makes the card take up the full width */
+  flex: 1;
+
 }
 
 .event-card:hover {
@@ -20,4 +29,39 @@
 .event-card p {
   color: #666;
   text-align: center; /* center aligns the text */
+}
+
+.ended-text {
+  color: red; /* You can change 'red' to any color you prefer */
+}
+
+.registered-users {
+  /* Styles for the registered users list */
+  flex: 1;
+  max-width: 250px; /* Adjust the width as needed */
+  background-color: #f9f9f9; /* Light background color for the sidebar */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+}
+
+.registered-users h3 {
+  margin-top: 0;
+  color: #333; /* Dark text color for the title */
+  font-size: 1.2em;
+}
+
+.registered-users ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.registered-users li {
+  padding: 5px 0; /* Spacing between user names */
+  border-bottom: 1px solid #ddd; /* Separator line */
+}
+
+.registered-users li:last-child {
+  border-bottom: none; /* Removes the bottom border for the last item */
 }

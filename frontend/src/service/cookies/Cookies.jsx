@@ -47,7 +47,6 @@ function clearCookies() {
     cookies.remove("refresh");
     cookies.remove("roles");
     cookies.remove("expiration");
-    cookies.remove("username");
 }
 
 function removeTokens() {
@@ -71,12 +70,12 @@ function cookiesExist() {
     return cookies.get("access") && cookies.get("refresh") && cookies.get("roles");
 }
 
-function setUsername(username) {
-    cookies.set("username", username);
+function setUserId(id) {
+    cookies.set("userId", id);
 }
 
-function getUsername() {
-    return cookies.get("username");
+function getUserId() {
+    return cookies.get("userId");
 }
 
 export const CookiesService = {
@@ -95,8 +94,8 @@ export const CookiesService = {
     setTokens,
     setCookies,
     cookiesExist,
-    setUsername,
-    getUsername
+    setUserId,
+    getUserId
 
 }
 

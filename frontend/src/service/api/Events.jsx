@@ -1,3 +1,4 @@
+// import useLoggedIn from "../../hooks/useLoggedIn"
 import { CookiesService } from "../cookies/Cookies"
 
 function getAllEvents() {
@@ -51,10 +52,47 @@ function addEvent(event) {
     })
 }
 
+function registerToEvent(eventId) {
+    const userId = CookiesService.getUserId();
+    return fetch('http://localhost:8080/events/registerUserToEvent', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ` + CookiesService.getAccessToken(),
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, eventId }),
+    })
+}
+
+function checkUserRegisteredToEvent(eventId) {
+    const userId = CookiesService.getUserId();
+    return fetch('http://localhost:8080/events/checkUserRegisteredToEvent', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ` + CookiesService.getAccessToken(),
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, eventId }),
+    })
+}
+
+function getUsersRegisteredToEvent(eventId) {
+    return fetch('http://localhost:8080/events/getUsersRegisteredToEvent/' + eventId, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ` + CookiesService.getAccessToken(),
+            'Content-Type': 'application/json',
+        },
+    })
+}
+
 export const Event = {
     getAllEvents,
     getActiveEvents,
     getPastEvents,
     getUpcomingEvents,
-    addEvent
+    addEvent,
+    registerToEvent,
+    checkUserRegisteredToEvent,
+    getUsersRegisteredToEvent
 }

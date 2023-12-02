@@ -5,7 +5,8 @@
 import useUser from '../../hooks/useUser';
 
 
-function Profile() {
+function Profile(props) {
+    
     // const navigate = useNavigate();
     const user = useUser();
     // console.log(user);

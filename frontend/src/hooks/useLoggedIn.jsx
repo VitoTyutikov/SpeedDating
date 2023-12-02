@@ -9,7 +9,7 @@ function useLoggedIn() {
     useEffect(() => {
         if (CookiesService.cookiesExist() && CookiesService.getExpiration() > (Date.now() + 50)) {
             setIsLoggedIn(true);
-        } else {
+        } else if (CookiesService.getRefreshToken()) {
             User.updateToken()
                 .then((response) => {
                     if (!response.ok) {

@@ -39,7 +39,7 @@ public class SecurityConfiguration {
                 .csrf((csrf) -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/authenticate", "/refresh","user/").permitAll()
+                        .requestMatchers("/authenticate", "/refresh", "/user/register").permitAll()
                         // .anyRequest().permitAll())
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session

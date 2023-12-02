@@ -6,6 +6,13 @@ function useEvents() {
     const [events, setEvents] = useState([]);
     const isLoggedIn = useLoggedIn();
     const navigate = useNavigate();
+    const addEvent = (newEvent) => {
+        // console.log("Before adding new event:", events); // Debugging log
+        setEvents(currentEvents => [...currentEvents, newEvent]);
+        // console.log("After adding new event:", events); // Debugging log
+    }
+
+
     useEffect(() => {
         if (isLoggedIn) {
             Event.getAllEvents()
@@ -25,33 +32,11 @@ function useEvents() {
         }
 
     }, [isLoggedIn]);
+
+
     // console.log(events);
-    return events;
+    return { events, addEvent };
 
 }
 
 export default useEvents;
-
-// const [events, setEvents] = useState([]);
-//     const isLoggedIn = useLoggedIn();
-//     const navigate = useNavigate();
-//     useEffect(() => {
-//         if (!isLoggedIn) {
-//             return;
-//         }
-//         Event.getAllEvents()
-//             .then((response) => {
-//                 if (!response.ok) {
-//                     // Handle HTTP error response
-//                     throw new Error('Network response was not ok');
-//                 }
-//                 return response.json();
-//             })
-//             .then(data => {
-//                 setEvents(data);
-//             })
-//             .catch(err => {
-//                 console.log(err);
-//                 navigate('/login');
-//             })
-//     }, [isLoggedIn]);

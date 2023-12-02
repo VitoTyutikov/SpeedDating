@@ -1,6 +1,8 @@
 package vito.speeddating.service;
 
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 import vito.speeddating.entity.BlackListTokenEntity;
 import vito.speeddating.repository.BlackListTokenRepository;
 
@@ -15,6 +17,7 @@ public class BlackListTokenService {
         this.blackListTokenRepository = blackListTokenRepository;
     }
 
+    @Transactional
     public BlackListTokenEntity save(BlackListTokenEntity blackListToken) {
         return blackListTokenRepository.save(blackListToken);
     }
@@ -27,6 +30,7 @@ public class BlackListTokenService {
         return blackListTokenRepository.findByToken(token) != null;
     }
 
+    @Transactional
     public void delete(BlackListTokenEntity blackListToken) {
         blackListTokenRepository.delete(blackListToken);
     }
