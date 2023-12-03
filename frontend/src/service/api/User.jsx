@@ -28,6 +28,7 @@ function signup(user) {
     })
 }
 
+
 function updateToken() {
     return fetch('http://localhost:8080/refresh', {
         method: 'POST',
@@ -73,11 +74,61 @@ function updateUser(user) {
     })
 }
 
+function logout() {
+    return fetch('http://localhost:8080/logout', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+       
+    })
+        .then((response) => {
+            fetch ('http://localhost:8080/afterLogout', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ refreshToken: CookiesService.getRefreshToken() }),
+            })
+            .then((response) => {
+                CookiesService.clearCookies();
+                window.location.href = '/login';
+            })
+
+           
+            // window.location.href = '/login';
+        })
+}
+
+function getAllUsers() {
+    return fetch('http://localhost:8080/user/all', {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + CookiesService.getAccessToken(),
+        }
+    })
+}
+
+function deleteUser(id) {
+    
+    return fetch('http://localhost:8080/user/delete/' + id, {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + CookiesService.getAccessToken(),
+        }
+    })
+}
+
 export const User = {
     login,
     signup,
     updateToken,
     profileData,
     getUserById,
-    updateUser
+    updateUser,
+    logout,
+    getAllUsers,
+    deleteUser
 }

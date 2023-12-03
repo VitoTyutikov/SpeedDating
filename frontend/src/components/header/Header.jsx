@@ -3,12 +3,17 @@ import useLoggedIn from '../../hooks/useLoggedIn';
 import css from './Header.module.css';
 import LoggedInHeader from './LoggedInHeader';
 import LoggedOutHeader from './LoggedOutHeader';
+import AdminHeader from './AdminHeader';
 function Header() {
     const isLoggedIn = useLoggedIn();
     const [header, setHeader] = useState(null);
 
     useEffect(() => {
-        if (isLoggedIn) {
+        console.log(isLoggedIn);
+        if (isLoggedIn === '[ROLE_ADMIN]') {
+            setHeader(< AdminHeader />);
+        }
+        else if (isLoggedIn !== null) {
             setHeader(<LoggedInHeader />);
         } else {
             setHeader(<LoggedOutHeader />);

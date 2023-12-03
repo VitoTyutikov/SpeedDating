@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,6 +87,13 @@ public class AuthentificationController {
                 jwtTokenUtil.extractExpiration(tokens.get("accessToken")).getTime());
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @RequestMapping(value = "/afterLogout", method = { RequestMethod.POST })
+    public ResponseEntity<String> logout(@RequestBody TokenRequest tokenRequest) {
+        userService.logout(tokenRequest.getRefreshToken());
+        return ResponseEntity.status(HttpStatus.OK).body("Logout successful");
+
     }
 
 }

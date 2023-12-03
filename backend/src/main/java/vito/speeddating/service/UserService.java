@@ -1,6 +1,7 @@
 package vito.speeddating.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import vito.speeddating.dto.UserDTO;
+import vito.speeddating.entity.BlackListTokenEntity;
 import vito.speeddating.entity.UserEntity;
 import vito.speeddating.repository.UserRepository;
 
@@ -21,9 +23,13 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private final BlackListTokenService blackListTokenService;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            BlackListTokenService blackListTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.blackListTokenService = blackListTokenService;
     }
 
     public void save(UserEntity user) {
@@ -112,7 +118,8 @@ public class UserService implements UserDetailsService {
     public UserEntity update(UserDTO user) {
         try {
             UserEntity userEntity = userRepository.findByUsername(user.getUsername())
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + user.getUsername()));
+                    .orElseThrow(
+                            () -> new UsernameNotFoundException("User not found with username: " + user.getUsername()));
             // userEntity.setUsername(user.getUsername());
             userEntity.setFirstName(user.getFirstName());
             userEntity.setLastName(user.getLastName());
@@ -130,6 +137,14 @@ public class UserService implements UserDetailsService {
             return null;
         }
 
+    }
+
+    public void logout(String refreshToken) {
+        BlackListTokenEntity blackListToken = new BlackListTokenEntity();
+        blackListToken.setToken(refreshToken);
+        blackListToken.setAddedAt(LocalDateTime.now());
+        blackListTokenService.save(blackListToken);
+        
     }
 
 }

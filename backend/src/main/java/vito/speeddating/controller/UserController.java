@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vito.speeddating.dto.UserDTO;
 import vito.speeddating.entity.UserEntity;
+import vito.speeddating.security.TokenRequest;
 import vito.speeddating.service.UserService;
 
 @RequestMapping("/user")
@@ -38,10 +38,9 @@ public class UserController {
         return userService.findByUsername(login);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<UserEntity> findAll() {
-
         return userService.findAll();
     }
 
@@ -65,9 +64,5 @@ public class UserController {
         return userService.update(user);
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public void logout() {
-        
-    }
-
+    
 }

@@ -1,0 +1,38 @@
+.userList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* This will center the UserCard components if they have widths less than the container */
+    width: 100%;
+}
+
+
+/* .cell {
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+} */
+
+
+.userCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+
+
+.cell {
+    /* Add any specific styling for the cell here */
+    padding: 5px;
+    /* example padding */
+    text-align: center;
+    /* centers the text within the cell */
+    flex: 1;
+    /* ensures each cell takes up equal space */
+    min-width: 0;
+    /* prevents cells from stretching beyond the container width */
+}

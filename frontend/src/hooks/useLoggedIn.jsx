@@ -2,39 +2,34 @@ import { User } from "../service/api/User";
 import { CookiesService } from "../service/cookies/Cookies";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import apiRequest from "../service/api/ApiRequest";
 // import useUser from "./useUser";
 function useLoggedIn() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(null);
     const navigate = useNavigate();
     useEffect(() => {
-        if (CookiesService.cookiesExist() && CookiesService.getExpiration() > (Date.now() + 50)) {
-            setIsLoggedIn(true);
-        } else if (CookiesService.getRefreshToken()) {
-            User.updateToken()
-                .then((response) => {
-                    if (!response.ok) {
-                        setIsLoggedIn(false);
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.access === undefined || data.refresh === undefined || data.roles === undefined || data.expiration === undefined) {
-                        CookiesService.clearCookies();
-                        setIsLoggedIn(false);
-                        throw new Error('Invalid response from server');
-                    }
-                    CookiesService.setCookies(data.access, data.refresh, data.roles, data.expiration);
-                    setIsLoggedIn(true);
-                })
-                .catch((error) => {
-                    setIsLoggedIn(false);
-                    console.log('Update token failed: in useLoggedIn', error);
+        const checkLoginStatus = async () => {
+            if (CookiesService.cookiesExist() && CookiesService.getExpiration() > (Date.now() + 50)) {
+                setIsLoggedIn(CookiesService.getRoles());
+            } else if (CookiesService.getRefreshToken()) {
+                try {
+                    await apiRequest(User.updateToken);
+                    setIsLoggedIn(CookiesService.getRoles());
+                } catch (error) {
+                    console.error('Update token failed: in useLoggedIn', error);
+                    setIsLoggedIn(null);
                     CookiesService.clearCookies();
                     navigate('/login');
-                })
-        }
-    }, [navigate]);//TODO: need navigate?
+                }
+            } else {
+                setIsLoggedIn(null);
+                navigate('/login');
+            }
+        };
+
+        checkLoginStatus();
+    }, [navigate]);
+    // console.log(isLoggedIn);
     return isLoggedIn;
 }
 

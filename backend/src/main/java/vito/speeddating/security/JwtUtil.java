@@ -55,7 +55,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         // String accessToken = createToken(claims, userDetails.getUsername(),
         // Duration.ofMinutes(1L), "ACCESS");
-        String accessToken = createToken(claims, userDetails.getUsername(), Duration.ofSeconds(20L), "ACCESS");
+        String accessToken = createToken(claims, userDetails.getUsername(), Duration.ofSeconds(5L), "ACCESS");
         String refreshToken = createToken(claims, userDetails.getUsername(), Duration.ofDays(30L), "REFRESH");
 
         Map<String, String> tokens = new HashMap<>();

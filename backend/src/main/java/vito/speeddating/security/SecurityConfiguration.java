@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServletResponse;
 import vito.speeddating.service.UserService;
 
 @EnableWebSecurity
@@ -39,9 +40,14 @@ public class SecurityConfiguration {
                 .csrf((csrf) -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/authenticate", "/refresh", "/user/register").permitAll()
+                        .requestMatchers("/authenticate", "/refresh", "/user/register", "/logout", "/afterLogout")
+                        .permitAll()
                         // .anyRequest().permitAll())
                         .anyRequest().authenticated())
+                .logout((logout) -> logout
+                        .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
+                            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                        }))
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

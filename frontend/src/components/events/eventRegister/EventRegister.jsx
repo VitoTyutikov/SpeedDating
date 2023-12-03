@@ -26,7 +26,7 @@ function EventRegister() {
     event.preventDefault();
     // Handle form submission
 
-    if (CookiesService.getExpiration() < Date.now() + 300) {
+    if (CookiesService.getExpiration() < Date.now() + 40) {
       User.updateToken()
         .then((response) => {
           if (!response.ok) {
@@ -48,9 +48,6 @@ function EventRegister() {
               addEvent(newEvent); // Update the events state
               // Provide user feedback or redirect
             })
-            .catch((error) => {
-              // Handle errors
-            });
         })
         .catch((error) => {
           console.error('Update token failed:', error);
