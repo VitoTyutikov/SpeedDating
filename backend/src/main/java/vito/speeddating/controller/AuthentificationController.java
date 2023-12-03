@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +40,6 @@ public class AuthentificationController {
 
     }
 
-    @CrossOrigin
     @RequestMapping(value = "/refresh", method = { RequestMethod.POST })
     public ResponseEntity<?> refreshTokens(@RequestBody TokenRequest tokenRequest) throws Exception {
         final String refreshToken = tokenRequest.getRefreshToken();
@@ -69,7 +67,6 @@ public class AuthentificationController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @CrossOrigin
     @RequestMapping(value = "/authenticate", method = { RequestMethod.POST })
     public ResponseEntity<AuthenticationResponse> createAuthenticationTokens(
             @RequestBody AuthenticationRequest authenticationRequest)

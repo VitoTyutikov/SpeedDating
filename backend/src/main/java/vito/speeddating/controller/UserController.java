@@ -19,7 +19,6 @@ import vito.speeddating.service.UserService;
 
 @RequestMapping("/user")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final UserService userService;
@@ -33,7 +32,6 @@ public class UserController {
         return authentication.getName();
     }
 
-    @CrossOrigin
     @GetMapping
     public UserEntity getCurrentUser() {
         String login = getCurrentUserLogin();
@@ -47,28 +45,29 @@ public class UserController {
         return userService.findAll();
     }
 
-    @CrossOrigin
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserEntity findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
-    @CrossOrigin
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerNewUser(@RequestBody UserDTO userDto) {
         return userService.registerNewUser(userDto);
     }
 
-    @CrossOrigin
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id) {
         userService.delete(userService.findById(id));
     }
 
-    @CrossOrigin
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public UserEntity update(@RequestBody UserDTO user) {
         return userService.update(user);
+    }
+
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    public void logout() {
+        
     }
 
 }

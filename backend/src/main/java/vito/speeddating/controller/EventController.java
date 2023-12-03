@@ -33,37 +33,37 @@ public class EventController {
         return authentication.getName();
     }
 
-    @CrossOrigin
+    
     @GetMapping
     public List<EventEntity> findAll() {
         return eventService.findAll();
     }
 
-    @CrossOrigin
+    
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public EventEntity findById(Long id) {
         return eventService.findById(id);
     }
 
-    @CrossOrigin
+    
     @RequestMapping(value = "/active", method = RequestMethod.GET)
     public List<EventEntity> findAllActive() {
         return eventService.findByEventDateTimeAfter(LocalDateTime.now());
     }
 
-    @CrossOrigin
+    
     @RequestMapping(value = "/upcoming", method = RequestMethod.GET)
     public List<EventEntity> findAllUpcoming() {
         return eventService.findByEventDateTimeBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
     }
 
-    @CrossOrigin
+    
     @RequestMapping(value = "/past", method = RequestMethod.GET)
     public List<EventEntity> findAllPast() {
         return eventService.findByEventDateTimeBefore(LocalDateTime.now());
     }
 
-    @CrossOrigin
+    
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public EventEntity addNewEvent(@RequestBody EventDTO eventDTO) {
         // String username = getCurrentUserLogin();
@@ -73,20 +73,20 @@ public class EventController {
         return eventService.addNewEvent(eventDTO);
     }
 
-    @CrossOrigin
+    
     @RequestMapping(value = "/registerUserToEvent", method = RequestMethod.POST)
     public boolean registerUserToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
         return eventService.addUserToEvent(registerUserToEventDTO.getUserId(), registerUserToEventDTO.getEventId());
     }
 
-    @CrossOrigin
+    
     @RequestMapping(value = "/checkUserRegisteredToEvent", method = RequestMethod.POST)
     public boolean checkUserRegisteredToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
         return eventService.isUserRegisteredToEvent(registerUserToEventDTO.getUserId(),
                 registerUserToEventDTO.getEventId());
     }
 
-    @CrossOrigin
+    
     @RequestMapping(value = "/getUsersRegisteredToEvent", method = RequestMethod.GET)
     public List<UserEntity> getUsersRegisteredToEvent(@RequestParam Long eventId) {
         return eventService.getUsersRegisteredToEvent(eventId);
