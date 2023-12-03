@@ -108,4 +108,28 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    @Transactional
+    public UserEntity update(UserDTO user) {
+        try {
+            UserEntity userEntity = userRepository.findByUsername(user.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + user.getUsername()));
+            // userEntity.setUsername(user.getUsername());
+            userEntity.setFirstName(user.getFirstName());
+            userEntity.setLastName(user.getLastName());
+            userEntity.setEmail(user.getEmail());
+            // userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+            userEntity.setGender(user.getGender());
+            userEntity.setProfilePicture(user.getProfilePicture());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            userEntity.setDateOfBirth(LocalDate.parse(user.getDateOfBirth(), formatter));
+            userEntity.setBio(user.getBio());
+            userEntity.setCity(user.getCity());
+            save(userEntity);
+            return userEntity;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
 }

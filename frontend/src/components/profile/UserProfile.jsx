@@ -2,11 +2,14 @@ import './Profile.module.css';
 import { User } from '../../service/api/User';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+// import { CookiesService } from '../../service/cookies/Cookies';
+// import { useNavigate } from 'react-router-dom';
 function UserProfile() {//TODO: add send message if userId!= cookies.userId
 
 
 
     const { id } = useParams();
+
     const [user, setUser] = useState(null);
 
     useEffect(() => {

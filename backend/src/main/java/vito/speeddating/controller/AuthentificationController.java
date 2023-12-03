@@ -55,8 +55,7 @@ public class AuthentificationController {
         final UserDetails userDetails = userService.loadUserByUsername(username);
         // validate the refresh token
         if (blackListTokenService.isBlackListed(refreshToken)
-                || !jwtTokenUtil.validateToken(refreshToken, userDetails)) {
-            // throw new Exception("Invalid refresh token");
+                || !jwtTokenUtil.validateToken(refreshToken, userDetails, "REFRESH")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is invalid");
         }
         BlackListTokenEntity blackListToken = new BlackListTokenEntity();
@@ -83,13 +82,11 @@ public class AuthentificationController {
         }
 
         final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
-        final Map<String, String> tokens = jwtTokenUtil.generateTokens(userDetails);// TODO: add refresh tokens to black
-                                                                                    // list
+        final Map<String, String> tokens = jwtTokenUtil.generateTokens(userDetails);
 
         final AuthenticationResponse response = new AuthenticationResponse(tokens.get("accessToken"),
                 tokens.get("refreshToken"), userDetails.getAuthorities().toString(),
-                jwtTokenUtil.extractExpiration(tokens.get("accessToken")).getTime());// TODO: if token expired(response
-        // 403) then refresh
+                jwtTokenUtil.extractExpiration(tokens.get("accessToken")).getTime());
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

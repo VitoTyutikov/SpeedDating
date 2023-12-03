@@ -55,7 +55,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         // String accessToken = createToken(claims, userDetails.getUsername(),
         // Duration.ofMinutes(1L), "ACCESS");
-        String accessToken = createToken(claims, userDetails.getUsername(), Duration.ofSeconds(5L), "ACCESS");
+        String accessToken = createToken(claims, userDetails.getUsername(), Duration.ofSeconds(20L), "ACCESS");
         String refreshToken = createToken(claims, userDetails.getUsername(), Duration.ofDays(30L), "REFRESH");
 
         Map<String, String> tokens = new HashMap<>();
@@ -76,10 +76,13 @@ public class JwtUtil {
                 .compact();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, UserDetails userDetails, String expectedTokenType) {
         try {
             final String username = extractUsername(token);
-            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+            final String tokenType = extractClaim(token, claims -> claims.get("token_type", String.class));
+            return (username.equals(userDetails.getUsername())
+                    && !isTokenExpired(token)
+                    && expectedTokenType.equals(tokenType));
         } catch (Exception e) {
             return false;
         }

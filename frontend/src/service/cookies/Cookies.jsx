@@ -47,6 +47,7 @@ function clearCookies() {
     cookies.remove("refresh");
     cookies.remove("roles");
     cookies.remove("expiration");
+    cookies.remove("userId");
 }
 
 function removeTokens() {

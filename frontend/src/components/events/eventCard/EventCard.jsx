@@ -4,6 +4,7 @@ import styles from './EventCard.module.css';
 import useLoggedIn from '../../../hooks/useLoggedIn';
 import { Event } from '../../../service/api/Events';
 import { Link, NavLink } from 'react-router-dom';
+import { CookiesService } from '../../../service/cookies/Cookies';
 // import { CookiesService } from '../../../service/cookies/Cookies';
 function EventCard({ event }) {
   // eslint-disable-next-line
@@ -81,9 +82,9 @@ function EventCard({ event }) {
           <h3>Registered Users</h3>
           <ul>
             {event.registeredUsers.map((user) => (
-             <li key={user.id}>
-             <NavLink to={`/user/${user.id}`}>{user.username}</NavLink>
-           </li>
+              <li key={user.id}>
+                <NavLink to={CookiesService.getUserId() === user.id ? '/profile' : `/user/${user.id}`}>{CookiesService.getUserId() === user.id ? 'You' : user.username}</NavLink>
+              </li>
             ))}
           </ul>
         </div>

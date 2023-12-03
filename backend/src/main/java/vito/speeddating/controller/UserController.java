@@ -2,6 +2,7 @@ package vito.speeddating.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,7 +19,7 @@ import vito.speeddating.service.UserService;
 
 @RequestMapping("/user")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000") 
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final UserService userService;
@@ -32,7 +33,6 @@ public class UserController {
         return authentication.getName();
     }
 
-    
     @CrossOrigin
     @GetMapping
     public UserEntity getCurrentUser() {
@@ -40,10 +40,10 @@ public class UserController {
         return userService.findByUsername(login);
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<UserEntity> findAll() {
-        
+
         return userService.findAll();
     }
 
@@ -57,6 +57,18 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerNewUser(@RequestBody UserDTO userDto) {
         return userService.registerNewUser(userDto);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+        userService.delete(userService.findById(id));
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public UserEntity update(@RequestBody UserDTO user) {
+        return userService.update(user);
     }
 
 }

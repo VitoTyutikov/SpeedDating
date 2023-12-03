@@ -38,24 +38,6 @@ function updateToken() {
         body: JSON.stringify({ refreshToken: CookiesService.getRefreshToken(), userId: CookiesService.getUserId() }),
 
     })
-    // .then((response) => response.json())
-    // .then((data) => {
-    //     // console.log(response.json());
-    //     // if (response.ok) {
-    //     // const data = response.json();
-    //     // console.log('Updated token:', data);
-    //     if (data.access === undefined || data.refresh === undefined || data.roles === undefined || data.expiration === undefined) {
-    //         CookiesService.clearCookies();
-    //         throw new Error('Invalid response from server');
-    //     }
-    //     CookiesService.setCookies(data.access, data.refresh, data.roles, data.expiration);
-    //     // }
-    //     // return response.json();
-    // })
-    // .catch((error) => {
-    //     console.error('Update token failed:', error);
-
-    // });
 }
 
 
@@ -67,16 +49,6 @@ function profileData() {
             Authorization: `Bearer ` + CookiesService.getAccessToken(),
         }
     })
-    // .then((response) => {
-    //     if (response.ok) {
-    //         console.log(response);
-    //         console.log(response.json());
-    //         // return response.json();
-    //     }
-    //     else {
-    //         updateToken();
-    //     }
-    // });
 }
 
 
@@ -90,10 +62,22 @@ function getUserById(id) {
     })
 }
 
+function updateUser(user) {
+    return fetch('http://localhost:8080/user/update', {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + CookiesService.getAccessToken(),
+        },
+        body: JSON.stringify(user),
+    })
+}
+
 export const User = {
     login,
     signup,
     updateToken,
     profileData,
-    getUserById
+    getUserById,
+    updateUser
 }
