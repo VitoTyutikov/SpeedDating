@@ -2,6 +2,7 @@ import './Profile.module.css';
 import { User } from '../../service/api/User';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import apiRequest from '../../service/api/ApiRequest';
 // import { CookiesService } from '../../service/cookies/Cookies';
 // import { useNavigate } from 'react-router-dom';
 function UserProfile() {//TODO: add send message if userId!= cookies.userId
@@ -13,21 +14,24 @@ function UserProfile() {//TODO: add send message if userId!= cookies.userId
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await User.getUserById(id);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setUser(data);
-            } catch (error) {
-                console.error('Get user failed:', error);
-            }
+        const fetchUser = () => {
+            apiRequest(User.getUserById, id)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    setUser(data);
+                })
+                .catch((error) => {
+                    console.error('Error fetching user:', error);
+                })
         };
 
         fetchUser();
-    }, [id]); // Re-run the effect when `id` changes
+    }, [id]);
     return (
         <div className="profile">
             {user ? (

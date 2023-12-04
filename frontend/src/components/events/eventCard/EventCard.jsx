@@ -1,14 +1,13 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './EventCard.module.css';
-import useLoggedIn from '../../../hooks/useLoggedIn';
 import { Event } from '../../../service/api/Events';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { CookiesService } from '../../../service/cookies/Cookies';
-// import { CookiesService } from '../../../service/cookies/Cookies';
+import apiRequest from '../../../service/api/ApiRequest';
 function EventCard({ event }) {
   // eslint-disable-next-line
-  const isLoggedIn = useLoggedIn();
+  // const isLoggedIn = useLoggedIn();
   let dateStr = event.eventDateTime;
   let dateParts = dateStr.split("T");
 
@@ -21,10 +20,8 @@ function EventCard({ event }) {
   const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
-    // Assume the current user's ID is available somehow, e.g., from a user context or authentication service
 
-    // Call the backend to check if the user is registered for the event
-    Event.checkUserRegisteredToEvent(event.id)
+    apiRequest(Event.checkUserRegisteredToEvent, event.id)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -32,9 +29,7 @@ function EventCard({ event }) {
         return response.json();
       })
       .then((registered) => {
-        // let response = registered.json();
         setIsRegistered(registered);
-        // console.log(registered);
       })
       .catch((error) => {
         console.error('Error checking registration status:', error);
@@ -42,7 +37,7 @@ function EventCard({ event }) {
   }, [event.id]);
 
   const handleClick = () => {
-    Event.registerToEvent(event.id)
+    apiRequest(Event.registerToEvent, event.id)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -72,8 +67,8 @@ function EventCard({ event }) {
         <p>{dateObj.toLocaleString()}</p>
         <p>{event.address}</p>
         <p>{`Price: $${event.price}`}</p>
-        {(isLoggedIn && isFuture && !isRegistered && <button onClick={handleClick}>Register to events</button>) || (!isFuture && <br />)}
-        {(isLoggedIn && isFuture && <button onClick={handleEgtRegisteredUsers}>Show Registered Users</button>) || (!isFuture && <br />)}
+        {( isFuture && !isRegistered && <button onClick={handleClick}>Register to events</button>) || (!isFuture && <br />)}
+        {( isFuture && <button onClick={handleEgtRegisteredUsers}>Show Registered Users</button>) || (!isFuture && <br />)}
         {/* {!isFuture && <br />} */}
         {/* {isLoggedIn && !isFuture && <p>Event has ended</p>} */}
       </div>

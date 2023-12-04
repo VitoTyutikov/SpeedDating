@@ -1,7 +1,7 @@
 import useUser from '../../hooks/useUser';
 import { useState, useEffect } from 'react';
 import { User } from '../../service/api/User';
-
+import apiRequest from '../../service/api/ApiRequest';
 
 // username: user.username,
 // firstName: user.firstName,
@@ -51,8 +51,6 @@ function Profile() {
             ...prevData,
             [name]: value,
         }));
-        // console.log(formData);
-        // console.log(user);
 
     };
     const handleEditToggle = () => {
@@ -61,12 +59,13 @@ function Profile() {
 
     const handleSubmit = (event) => {
         event.preventDefault();//
-        User.updateUser(formData).then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+        apiRequest(User.updateUser, formData)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
 
         setEditMode(false);
     };

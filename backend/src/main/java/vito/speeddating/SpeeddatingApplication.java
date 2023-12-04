@@ -96,7 +96,7 @@ public class SpeeddatingApplication {
 		anotherUser.setCity("San Francisco");
 		anotherUser.setLocation("37.7749, -122.4194"); // Example coordinates for San Francisco
 		anotherUser.setRole("USER");
-		anotherUser.setAccountNonLocked(true);
+		anotherUser.setAccountNonLocked(false);
 		userService.save(anotherUser);
 	}
 }

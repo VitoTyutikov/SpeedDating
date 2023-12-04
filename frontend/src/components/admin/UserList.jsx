@@ -3,40 +3,28 @@ import React, { useEffect, useState } from 'react';
 import UserCard from './UserCard'; // Assuming UserCard is in the same directory
 import { User } from '../../service/api/User';
 import { CookiesService } from '../../service/cookies/Cookies';
-
+import apiRequest from '../../service/api/ApiRequest';
 const UserList = () => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        if (CookiesService.getExpiration() < Date.now() + 40) {
-            User.updateToken()
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
+        const fetchUsers = () => {
+            apiRequest(User.getAllUsers).then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
                 .then((data) => {
-                    if (data.access === undefined || data.refresh === undefined || data.roles === undefined || data.expiration === undefined) {
-                        CookiesService.clearCookies();
-                        throw new Error('Invalid response from server');
-                    }
-                    CookiesService.setCookies(data.access, data.refresh, data.roles, data.expiration);
-                })
-                .then(() => {
-                    User.getAllUsers()
-                        .then(response => response.json())
-                        .then(data => {
-                            setUsers(data);
-                        })
-                });
-        } else {
-            User.getAllUsers()
-                .then(response => response.json())
-                .then(data => {
                     setUsers(data);
                 })
-        }
+                .catch((error) => {
+                    console.error('Error fetching users:', error);
+                    // Handle error, e.g., show error message to the user
+                })
+        };
+
+        fetchUsers();
     }, []);
 
 
@@ -49,58 +37,24 @@ const UserList = () => {
         // Implement toggle boolean logic here
         console.log(`Toggle boolean field ${field} for user ${userId}`);
     };
-
     const handleDeleteUser = (userId) => {
-        if (CookiesService.getExpiration() < Date.now() + 40) {
-            User.updateToken()
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.access === undefined || data.refresh === undefined || data.roles === undefined || data.expiration === undefined) {
-                        CookiesService.clearCookies();
-                        throw new Error('Invalid response from server');
-                    }
-                    CookiesService.setCookies(data.access, data.refresh, data.roles, data.expiration);
-                })
-                .then(() => {
-                    User.deleteUser(userId)
-                        .then((response) => {
-                            if (!response.ok) {
-                                throw new Error('Failed to delete user');
-                            }
-                        })
-                        .then(() => {
-                            User.getAllUsers()
-                                .then(response => response.json())
-                                .then(data => {
-                                    setUsers(data);
-                                });
-                        })
-                });
-        } else {
-            User.deleteUser(userId)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Failed to delete user');
-                    }
-                })
-                .then(() => {
-                    User.getAllUsers()
-                        .then(response => response.json())
-                        .then(data => {
-                            setUsers(data);
-                        });
-                })
-        }
-
-
-
-
+        apiRequest(User.deleteUser, userId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete user');
+                }
+                return User.getAllUsers; // Fetch all users after deletion
+            })
+            .then(response => response.json())
+            .then(data => {
+                setUsers(data); // Update users state with the new list
+            })
+            .catch(error => {
+                console.error('Error in handleDeleteUser:', error);
+                // Handle error, such as showing an error message
+            });
     };
+
 
     return (
         <div className="userList">
@@ -120,7 +74,7 @@ const UserList = () => {
                 <div style={{ flex: '1', textAlign: 'center' }}>Account Status</div>
                 <div style={{ flex: '1', textAlign: 'center' }}>Actions</div>
             </div> */}
-            {users.map(user => (
+            {users.filter(user => user.id !== CookiesService.getUserId()).map(user => (
                 <UserCard
                     key={user.id}
                     user={user}

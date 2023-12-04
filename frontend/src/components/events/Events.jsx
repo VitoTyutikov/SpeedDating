@@ -6,8 +6,9 @@ import useLoggedIn from '../../hooks/useLoggedIn';
 import useEvents from '../../hooks/useEvents';
 
 function Events() {
+
+  const events = useEvents();
   const isLoggedIn = useLoggedIn();
-  const { events } = useEvents();
   const items = events.map((event) => (
     <EventCard key={event.id} event={event} />
 

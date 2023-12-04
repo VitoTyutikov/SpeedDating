@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Event } from '../../../service/api/Events';
-import { CookiesService } from '../../../service/cookies/Cookies';
-import { User } from '../../../service/api/User';
-import useEvents from '../../../hooks/useEvents';
+import apiRequest from '../../../service/api/ApiRequest';
 function EventRegister() {
 
   const [formData, setFormData] = useState({
@@ -20,52 +18,25 @@ function EventRegister() {
 
   };
 
-  const { addEvent } = useEvents();
+  // const { addEvent } = useEvents();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission
 
-    if (CookiesService.getExpiration() < Date.now() + 40) {
-      User.updateToken()
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (data.access === undefined || data.refresh === undefined || data.roles === undefined || data.expiration === undefined) {
-            CookiesService.clearCookies();
-            throw new Error('Invalid response from server');
-          }
-          CookiesService.setCookies(data.access, data.refresh, data.roles, data.expiration);
-        })
-        .then(() => {
-          Event.addEvent(formData)
-            .then((response) => response.json())
-            .then((newEvent) => {
-              addEvent(newEvent); // Update the events state
-              // Provide user feedback or redirect
-            })
-        })
-        .catch((error) => {
-          console.error('Update token failed:', error);
-        })
-    } else {
-      Event.addEvent(formData)
-        .then((response) => response.json())
-        .then((newEvent) => {
-          addEvent(newEvent);
-        })
-        .catch((error) => {
-          // Handle errors
-        });
-    }
-    // window.location.href = '/events';
+    apiRequest(Event.addEvent, formData)
+      .then(response => response.json())
+      // .then(newEvent => {
+      //   addEvent(newEvent); // Update the events state
+      //   // Provide user feedback or redirect
+      // })
+      .catch(error => {
+        console.error('Error submitting event:', error);
+        // Handle errors, such as showing an error message
+      });
 
-    // }
+    // Redirect or update UI as needed after successful form submission
   };
+
 
   return (
     <>
@@ -91,6 +62,6 @@ function EventRegister() {
       </form>
     </>
   );
-}
+};
 
 export default EventRegister;

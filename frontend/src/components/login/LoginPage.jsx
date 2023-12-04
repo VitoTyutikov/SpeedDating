@@ -5,7 +5,6 @@ const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = (event) => {
-    console.log(JSON.stringify({ username, password }));
     event.preventDefault();
     // try {
     User.login(username, password)

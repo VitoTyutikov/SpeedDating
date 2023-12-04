@@ -3,7 +3,7 @@ import { User } from "../service/api/User";
 import { CookiesService } from "../service/cookies/Cookies";
 import { useNavigate } from "react-router-dom";
 import useLoggedIn from "./useLoggedIn";
-
+import apiRequest from "../service/api/ApiRequest";
 
 function useUser() {
     const [user, setUser] = useState(null);
@@ -11,7 +11,7 @@ function useUser() {
     const navigate = useNavigate();
     useEffect(() => {
         if (isLoggedIn) {
-            User.profileData()
+            apiRequest(User.profileData)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -20,13 +20,14 @@ function useUser() {
                 })
                 .then((data) => {
                     setUser(data);
+                    CookiesService.setUserId(data.id);
                 })
                 .catch((error) => {
                     navigate('/login');
                 })
         }
     }, [isLoggedIn]);
-    CookiesService.setUserId(user?.id);
+        
     return user;
 }
 

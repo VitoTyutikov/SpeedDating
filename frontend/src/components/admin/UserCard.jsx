@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import css from './UserList.module.css'; // Make sure to create a corresponding CSS module
 
 function UserCard({ user, onDeleteUser, onToggleBoolean, onChangeRole }) {

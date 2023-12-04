@@ -6,26 +6,22 @@ import LoggedOutHeader from './LoggedOutHeader';
 import AdminHeader from './AdminHeader';
 function Header() {
     const isLoggedIn = useLoggedIn();
-    const [header, setHeader] = useState(null);
 
-    useEffect(() => {
-        console.log(isLoggedIn);
-        if (isLoggedIn === '[ROLE_ADMIN]') {
-            setHeader(< AdminHeader />);
-        }
-        else if (isLoggedIn !== null) {
-            setHeader(<LoggedInHeader />);
-        } else {
-            setHeader(<LoggedOutHeader />);
-        }
-    }, [isLoggedIn])
+    let headerComponent;
+    if (isLoggedIn === '[ROLE_ADMIN]') {
+        headerComponent = <AdminHeader />;
+    } else if (isLoggedIn) {
+        headerComponent = <LoggedInHeader />;
+    } else {
+        headerComponent = <LoggedOutHeader />;
+    }
 
     return (
         <nav className={css.header}>
-            {header}
-        </nav >
+            {headerComponent}
+        </nav>
     );
-
 }
+
 
 export default Header;

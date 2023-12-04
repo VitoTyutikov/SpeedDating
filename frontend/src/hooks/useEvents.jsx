@@ -2,20 +2,16 @@ import { Event } from "../service/api/Events";
 import { useEffect, useState } from "react";
 import useLoggedIn from "./useLoggedIn";
 import { useNavigate } from "react-router-dom";
+import apiRequest from "../service/api/ApiRequest";
 function useEvents() {
     const [events, setEvents] = useState([]);
     const isLoggedIn = useLoggedIn();
     const navigate = useNavigate();
-    const addEvent = (newEvent) => {
-        // console.log("Before adding new event:", events); // Debugging log
-        setEvents(currentEvents => [...currentEvents, newEvent]);
-        // console.log("After adding new event:", events); // Debugging log
-    }
 
 
     useEffect(() => {
         if (isLoggedIn) {
-            Event.getAllEvents()
+            apiRequest(Event.getAllEvents)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -26,7 +22,6 @@ function useEvents() {
                     setEvents(data);
                 })
                 .catch(error => {
-                    console.log(error);
                     navigate('/login');
                 })
         }
@@ -34,8 +29,7 @@ function useEvents() {
     }, [isLoggedIn]);
 
 
-    // console.log(events);
-    return { events, addEvent };
+    return events;
 
 }
 

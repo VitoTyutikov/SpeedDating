@@ -1,4 +1,3 @@
-// import useLoggedIn from "../../hooks/useLoggedIn"
 import { CookiesService } from "../cookies/Cookies"
 
 function getAllEvents() {
