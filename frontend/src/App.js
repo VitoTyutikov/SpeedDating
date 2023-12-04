@@ -7,7 +7,6 @@ import Profile from './components/profile/Profile';
 import Register from './components/register/Register';
 import Events from './components/events/Events';
 import UserProfile from './components/profile/UserProfile';
-// import UserCard from './components/admin/UserCard';
 import UserList from './components/admin/UserList';
 function App() {
   return (

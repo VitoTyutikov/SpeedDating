@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom';
 import { CookiesService } from '../../../service/cookies/Cookies';
 import apiRequest from '../../../service/api/ApiRequest';
 function EventCard({ event }) {
-  // eslint-disable-next-line
   // const isLoggedIn = useLoggedIn();
   let dateStr = event.eventDateTime;
   let dateParts = dateStr.split("T");

@@ -26,8 +26,6 @@ public class JwtUtil {
         }
     }
 
-    // return extractClaim(token, Claims::getSubject);
-
     public Date extractExpiration(String token) {
         try {
             return extractClaim(token, Claims::getExpiration);
@@ -42,8 +40,7 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        // return
-        // Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
+      
         return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
     }
 
@@ -53,8 +50,6 @@ public class JwtUtil {
 
     public Map<String, String> generateTokens(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        // String accessToken = createToken(claims, userDetails.getUsername(),
-        // Duration.ofMinutes(1L), "ACCESS");
         String accessToken = createToken(claims, userDetails.getUsername(), Duration.ofSeconds(5L), "ACCESS");
         String refreshToken = createToken(claims, userDetails.getUsername(), Duration.ofDays(30L), "REFRESH");
 

@@ -11,7 +11,6 @@ import jakarta.annotation.PostConstruct;
 import vito.speeddating.entity.UserEntity;
 import vito.speeddating.service.UserService;
 
-// LocalDateTime is an immutable date-time object that represents a date-time with default format as yyyy-MM-dd-HH-mm-ss
 @SpringBootApplication
 public class SpeeddatingApplication {
 	@Autowired
@@ -39,9 +38,9 @@ public class SpeeddatingApplication {
 		user.setBio("I am a software engineer.");
 		user.setDateJoined(LocalDate.now());
 		user.setCity("New York");
-		user.setLocation("40.7128, -74.0060"); // Example coordinates for New York
+		user.setLocation("40.7128, -74.0060");
 		user.setRole("ADMIN");
-		user.setAccountNonLocked(true); // Assumin
+		user.setAccountNonLocked(true);
 		userService.save(user);
 
 		UserEntity adminUser = new UserEntity();
@@ -75,12 +74,11 @@ public class SpeeddatingApplication {
 		regularUser.setBio("I am a regular user.");
 		regularUser.setDateJoined(LocalDate.now());
 		regularUser.setCity("Boston");
-		regularUser.setLocation("42.3601, -71.0589"); // Example coordinates for Boston
+		regularUser.setLocation("42.3601, -71.0589");
 		regularUser.setRole("USER");
 		regularUser.setAccountNonLocked(true);
 		userService.save(regularUser);
 
-		// Another regular user setup
 		UserEntity anotherUser = new UserEntity();
 		String anotherEncodedPassword = passwordEncoder.encode("another");
 		anotherUser.setUsername("anotheruser");
@@ -94,7 +92,7 @@ public class SpeeddatingApplication {
 		anotherUser.setBio("I am another regular user.");
 		anotherUser.setDateJoined(LocalDate.now());
 		anotherUser.setCity("San Francisco");
-		anotherUser.setLocation("37.7749, -122.4194"); // Example coordinates for San Francisco
+		anotherUser.setLocation("37.7749, -122.4194"); 
 		anotherUser.setRole("USER");
 		anotherUser.setAccountNonLocked(false);
 		userService.save(anotherUser);

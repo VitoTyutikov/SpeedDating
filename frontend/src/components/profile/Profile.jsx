@@ -3,18 +3,10 @@ import { useState, useEffect } from 'react';
 import { User } from '../../service/api/User';
 import apiRequest from '../../service/api/ApiRequest';
 
-// username: user.username,
-// firstName: user.firstName,
-// lastName: user.lastName,
-// email: user.email,
-
-// export default Profile;
-
 function Profile() {
     const [editMode, setEditMode] = useState(false);
-    const user = useUser(); // This might be null initially
+    const user = useUser();
 
-    // State for form data, initialized with safe defaults
     const [formData, setFormData] = useState({
         username: '',
         firstName: '',
@@ -34,7 +26,7 @@ function Profile() {
                 firstName: user.firstName || '',
                 lastName: user.lastName || '',
                 email: user.email || '',
-                password: '', // You might not want to set this from user data
+                password: '',
                 gender: user.gender || '',
                 profilePicture: user.profilePicture || '',
                 dateOfBirth: user.dateOfBirth || '',
@@ -43,7 +35,6 @@ function Profile() {
             });
         }
     }, [user]);
-    // Set form data when user is fetched
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -58,7 +49,7 @@ function Profile() {
     };
 
     const handleSubmit = (event) => {
-        event.preventDefault();//
+        event.preventDefault();
         apiRequest(User.updateUser, formData)
             .then((response) => {
                 if (!response.ok) {
@@ -70,7 +61,6 @@ function Profile() {
         setEditMode(false);
     };
 
-    //TODO:
     const renderUserInfo = () => (//TODO: add confirmation
         <>
             {editMode ? (

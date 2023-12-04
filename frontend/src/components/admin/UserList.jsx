@@ -1,6 +1,5 @@
-// UserList.jsx
 import React, { useEffect, useState } from 'react';
-import UserCard from './UserCard'; // Assuming UserCard is in the same directory
+import UserCard from './UserCard'
 import { User } from '../../service/api/User';
 import { CookiesService } from '../../service/cookies/Cookies';
 import apiRequest from '../../service/api/ApiRequest';
@@ -20,7 +19,6 @@ const UserList = () => {
                 })
                 .catch((error) => {
                     console.error('Error fetching users:', error);
-                    // Handle error, e.g., show error message to the user
                 })
         };
 
@@ -43,15 +41,14 @@ const UserList = () => {
                 if (!response.ok) {
                     throw new Error('Failed to delete user');
                 }
-                return User.getAllUsers; // Fetch all users after deletion
+                return User.getAllUsers;
             })
             .then(response => response.json())
             .then(data => {
-                setUsers(data); // Update users state with the new list
+                setUsers(data);
             })
             .catch(error => {
                 console.error('Error in handleDeleteUser:', error);
-                // Handle error, such as showing an error message
             });
     };
 

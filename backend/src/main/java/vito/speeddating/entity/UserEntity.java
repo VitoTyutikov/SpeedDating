@@ -72,9 +72,6 @@ public class UserEntity implements UserDetails {
     @Column
     boolean isAccountNonLocked=true;
 
-    // @ManyToMany(mappedBy = "registeredUsers")
-    // private List<EventEntity> events = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role));

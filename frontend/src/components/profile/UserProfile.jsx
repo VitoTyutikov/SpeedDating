@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import apiRequest from '../../service/api/ApiRequest';
 // import { CookiesService } from '../../service/cookies/Cookies';
-// import { useNavigate } from 'react-router-dom';
 function UserProfile() {//TODO: add send message if userId!= cookies.userId
 
 

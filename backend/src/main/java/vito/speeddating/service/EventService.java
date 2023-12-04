@@ -62,10 +62,7 @@ public class EventService {
         event.setEventDateTime(eventDTO.getEventDateTime());
         event.setAddress(eventDTO.getAddress());
         event.setPrice(eventDTO.getPrice());
-        // event.setUser(userService.findByUsername(username));
-        // event.setRegisteredUsers(event.getRegisteredUsers());
         eventRepository.save(event);
-        // System.out.println(event.toString());
         return event;
     }
 

@@ -40,7 +40,7 @@ public class UserController {
         return userService.findByUsername(login);
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<UserEntity> findAll() {
         return userService.findAll();
@@ -56,6 +56,7 @@ public class UserController {
         return userService.registerNewUser(userDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id) {
         userService.delete(userService.findById(id));
@@ -66,15 +67,16 @@ public class UserController {
         return userService.update(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/updateNonLocked", method = RequestMethod.PUT)
     public UserEntity updateNonBlocked(@RequestBody ChangeUserNonBlockDTO user) {
         return userService.updateNonLocked(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/updateRole", method = RequestMethod.PUT)
     public UserEntity updateRole(@RequestBody ChangeRoleDTO user) {
         return userService.updateRole(user);
     }
 
-    
 }

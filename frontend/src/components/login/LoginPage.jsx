@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { User } from '../../service/api/User';
-// import {jwtDecode} from 'jwt-decode';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = (event) => {
     event.preventDefault();
-    // try {
     User.login(username, password)
       .then((response) => {
         window.location.href = '/profile';

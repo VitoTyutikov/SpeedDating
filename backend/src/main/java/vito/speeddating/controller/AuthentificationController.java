@@ -52,7 +52,6 @@ public class AuthentificationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Refresh token is missing");
         }
         final UserDetails userDetails = userService.loadUserByUsername(username);
-        // validate the refresh token
         if (blackListTokenService.isBlackListed(refreshToken)
                 || !jwtTokenUtil.validateToken(refreshToken, userDetails, "REFRESH")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is invalid");

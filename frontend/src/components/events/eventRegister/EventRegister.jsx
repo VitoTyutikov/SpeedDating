@@ -18,23 +18,17 @@ function EventRegister() {
 
   };
 
-  // const { addEvent } = useEvents();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     apiRequest(Event.addEvent, formData)
       .then(response => response.json())
-      // .then(newEvent => {
-      //   addEvent(newEvent); // Update the events state
-      //   // Provide user feedback or redirect
-      // })
       .catch(error => {
         console.error('Error submitting event:', error);
-        // Handle errors, such as showing an error message
+
       });
 
-    // Redirect or update UI as needed after successful form submission
   };
 
 

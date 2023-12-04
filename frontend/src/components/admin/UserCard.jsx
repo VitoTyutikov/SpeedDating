@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import css from './UserList.module.css'; // Make sure to create a corresponding CSS module
+import css from './UserList.module.css'
 
 function UserCard({ user, onDeleteUser, onToggleNonLocked, onChangeRole }) {
     const [userDetails, setUserDetails] = useState(user);

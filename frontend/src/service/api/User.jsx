@@ -94,9 +94,6 @@ function logout() {
                     CookiesService.clearCookies();
                     window.location.href = '/login';
                 })
-
-
-            // window.location.href = '/login';
         })
 }
 
@@ -120,25 +117,25 @@ function deleteUser(id) {
     })
 }
 
-function updateNonLocked(userId, nonLocked){
+function updateNonLocked(userId, nonLocked) {
     return fetch(`${API_BASE_URL}/user/updateNonLocked`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ` + CookiesService.getAccessToken(),
         },
-        body: JSON.stringify({userId, nonLocked}),
+        body: JSON.stringify({ userId, nonLocked }),
     })
 }
 
-function updateRole(userId, role){
+function updateRole(userId, role) {
     return fetch(`${API_BASE_URL}/user/updateRole`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ` + CookiesService.getAccessToken(),
         },
-        body: JSON.stringify({userId, role}),
+        body: JSON.stringify({ userId, role }),
     })
 }
 
