@@ -1,25 +1,20 @@
 import { useState } from 'react';
 import css from './UserList.module.css'; // Make sure to create a corresponding CSS module
 
-function UserCard({ user, onDeleteUser, onToggleBoolean, onChangeRole }) {
+function UserCard({ user, onDeleteUser, onToggleNonLocked, onChangeRole }) {
     const [userDetails, setUserDetails] = useState(user);
 
     const handleRoleChange = () => {
-        // Call the passed onChangeRole function with the new role
-        // onChangeRole(userDetails.id, userDetails.role === 'ADMIN' ? 'USER' : 'ADMIN');
-    };
-
-    const handleToggleNonLocked = (field) => {
-        // Update the state and call the passed onToggleBoolean function
-        const updatedUserDetails = { ...userDetails, [field]: !userDetails[field] };
+        const updatedUserDetails = { ...userDetails, role: userDetails.role === 'ADMIN' ? 'USER' : 'ADMIN' };
         setUserDetails(updatedUserDetails);
-        // onToggleBoolean(userDetails.id, field, updatedUserDetails[field]);
+        onChangeRole(userDetails.id, userDetails.role === 'ADMIN' ? 'USER' : 'ADMIN');
     };
 
-    const handleDeleteUser = () => {
-        // Call the passed onDeleteUser function
-        onDeleteUser(userDetails.id);
-    }
+    const handleToggleNonLocked = () => {
+        const updatedUserDetails = { ...userDetails, accountNonLocked: !userDetails.accountNonLocked };
+        setUserDetails(updatedUserDetails);
+        onToggleNonLocked(userDetails.id, updatedUserDetails.accountNonLocked);
+    };
 
     return (
         <div className={css.userCard}>
@@ -44,13 +39,13 @@ function UserCard({ user, onDeleteUser, onToggleBoolean, onChangeRole }) {
                     <input
                         type="checkbox"
                         checked={userDetails.accountNonLocked}
-                        onChange={() => handleToggleNonLocked}
+                        onChange={handleToggleNonLocked}
                     />
                     Non-Locked
                 </label>
             </div>
             <div className={css.cell}>
-                <button onClick={() => onDeleteUser(userDetails.id)}>
+                <button style={{ backgroundColor: 'red' }} onClick={() => onDeleteUser(userDetails.id)}>
                     Delete
                 </button>
             </div>

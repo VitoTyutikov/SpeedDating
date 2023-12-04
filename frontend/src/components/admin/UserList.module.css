@@ -33,6 +33,6 @@
     /* centers the text within the cell */
     flex: 1;
     /* ensures each cell takes up equal space */
-    min-width: 0;
+    min-width: 2;
     /* prevents cells from stretching beyond the container width */
 }

@@ -29,14 +29,14 @@ const UserList = () => {
 
 
     const handleRoleChange = (userId, newRole) => {
-        // Implement role change logic here
-        console.log(`Change role for user ${userId} to ${newRole}`);
+        apiRequest(User.updateRole, userId, newRole);
     };
 
-    const handleToggleBoolean = (userId, field) => {
-        // Implement toggle boolean logic here
-        console.log(`Toggle boolean field ${field} for user ${userId}`);
+    const handleToggleNonLocked = (userId, nonLocked) => {
+        apiRequest(User.updateNonLocked, userId, nonLocked);
+        
     };
+
     const handleDeleteUser = (userId) => {
         apiRequest(User.deleteUser, userId)
             .then(response => {
@@ -58,28 +58,12 @@ const UserList = () => {
 
     return (
         <div className="userList">
-            {/* <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#f3f3f3' }}>
-                <div style={{ flex: '1', textAlign: 'center' }}>Username</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>First Name</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Last Name</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Email</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Gender</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Profile Picture</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Date of Birth</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Bio</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Date Joined</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>City</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Location</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Role</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Account Status</div>
-                <div style={{ flex: '1', textAlign: 'center' }}>Actions</div>
-            </div> */}
             {users.filter(user => user.id !== CookiesService.getUserId()).map(user => (
                 <UserCard
                     key={user.id}
                     user={user}
                     onChangeRole={handleRoleChange}
-                    onToggleBoolean={handleToggleBoolean}
+                    onToggleNonLocked={handleToggleNonLocked}
                     onDeleteUser={handleDeleteUser}
                 />
             ))}

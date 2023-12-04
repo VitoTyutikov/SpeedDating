@@ -1,7 +1,7 @@
 import { CookiesService } from "../cookies/Cookies"
-
+import { API_BASE_URL } from './apiConst';
 function getAllEvents() {
-    return fetch('http://localhost:8080/events', {
+    return fetch(`${API_BASE_URL}/events`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ` + CookiesService.getAccessToken(),
@@ -11,7 +11,7 @@ function getAllEvents() {
 }
 
 function getActiveEvents() {
-    return fetch('http://localhost:8080/events/active', {
+    return fetch(`${API_BASE_URL}/events/active`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ` + CookiesService.getAccessToken(),
@@ -21,7 +21,7 @@ function getActiveEvents() {
 }
 
 function getPastEvents() {
-    return fetch('http://localhost:8080/events/past', {
+    return fetch(`${API_BASE_URL}/events/past`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ` + CookiesService.getAccessToken(),
@@ -31,7 +31,7 @@ function getPastEvents() {
 }
 
 function getUpcomingEvents() {
-    return fetch('http://localhost:8080/events/upcoming', {
+    return fetch(`${API_BASE_URL}/events/upcoming`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ` + CookiesService.getAccessToken(),
@@ -41,7 +41,7 @@ function getUpcomingEvents() {
 }
 
 function addEvent(event) {
-    return fetch('http://localhost:8080/events/add', {
+    return fetch(`${API_BASE_URL}/events/add`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ` + CookiesService.getAccessToken(),
@@ -53,7 +53,7 @@ function addEvent(event) {
 
 function registerToEvent(eventId) {
     const userId = CookiesService.getUserId();
-    return fetch('http://localhost:8080/events/registerUserToEvent', {
+    return fetch(`${API_BASE_URL}/events/registerUserToEvent`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ` + CookiesService.getAccessToken(),
@@ -65,7 +65,7 @@ function registerToEvent(eventId) {
 
 function checkUserRegisteredToEvent(eventId) {
     const userId = CookiesService.getUserId();
-    return fetch('http://localhost:8080/events/checkUserRegisteredToEvent', {
+    return fetch(`${API_BASE_URL}/events/checkUserRegisteredToEvent`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ` + CookiesService.getAccessToken(),
@@ -76,7 +76,7 @@ function checkUserRegisteredToEvent(eventId) {
 }
 
 function getUsersRegisteredToEvent(eventId) {
-    return fetch('http://localhost:8080/events/getUsersRegisteredToEvent/' + eventId, {
+    return fetch(`${API_BASE_URL}/events/getUsersRegisteredToEvent/` + eventId, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ` + CookiesService.getAccessToken(),

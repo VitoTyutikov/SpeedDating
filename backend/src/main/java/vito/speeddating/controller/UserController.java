@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import vito.speeddating.dto.ChangeRoleDTO;
+import vito.speeddating.dto.ChangeUserNonBlockDTO;
 import vito.speeddating.dto.UserDTO;
 import vito.speeddating.entity.UserEntity;
 import vito.speeddating.security.TokenRequest;
@@ -62,6 +64,16 @@ public class UserController {
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public UserEntity update(@RequestBody UserDTO user) {
         return userService.update(user);
+    }
+
+    @RequestMapping(value = "/updateNonLocked", method = RequestMethod.PUT)
+    public UserEntity updateNonBlocked(@RequestBody ChangeUserNonBlockDTO user) {
+        return userService.updateNonLocked(user);
+    }
+
+    @RequestMapping(value = "/updateRole", method = RequestMethod.PUT)
+    public UserEntity updateRole(@RequestBody ChangeRoleDTO user) {
+        return userService.updateRole(user);
     }
 
     

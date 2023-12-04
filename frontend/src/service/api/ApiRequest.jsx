@@ -1,6 +1,5 @@
 import { User } from './User';
 import { CookiesService } from '../cookies/Cookies';
-
 const apiRequest = (requestFunc, ...params) => {
     if (CookiesService.getExpiration() < Date.now() + 40) {
         return User.updateToken()
@@ -16,7 +15,7 @@ const apiRequest = (requestFunc, ...params) => {
             })
             .catch((error) => {
                 console.error('Error refreshing token:', error);
-                throw error; 
+                throw error;
             });
     } else {
         return requestFunc(...params);

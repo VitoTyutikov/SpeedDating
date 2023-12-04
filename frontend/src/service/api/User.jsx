@@ -1,7 +1,7 @@
 import { CookiesService } from "../cookies/Cookies";
-
+import { API_BASE_URL } from "./apiConst"
 function login(username, password) {
-    return fetch('http://localhost:8080/authenticate', {
+    return fetch(`${API_BASE_URL}/authenticate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ function login(username, password) {
 }
 
 function signup(user) {
-    return fetch('http://localhost:8080/user/register', {
+    return fetch(`${API_BASE_URL}/user/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ function signup(user) {
 
 
 function updateToken() {
-    return fetch('http://localhost:8080/refresh', {
+    return fetch(`${API_BASE_URL}/refresh`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function updateToken() {
 
 
 function profileData() {
-    return fetch('http://localhost:8080/user', {
+    return fetch(`${API_BASE_URL}/user`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function profileData() {
 
 
 function getUserById(id) {
-    return fetch('http://localhost:8080/user/' + id, {
+    return fetch(`${API_BASE_URL}/user/` + id, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -64,7 +64,7 @@ function getUserById(id) {
 }
 
 function updateUser(user) {
-    return fetch('http://localhost:8080/user/update', {
+    return fetch(`${API_BASE_URL}/user/update`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json",
@@ -75,33 +75,33 @@ function updateUser(user) {
 }
 
 function logout() {
-    return fetch('http://localhost:8080/logout', {
+    return fetch(`${API_BASE_URL}/logout`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
         },
-       
+
     })
         .then((response) => {
-            fetch ('http://localhost:8080/afterLogout', {
+            fetch(`${API_BASE_URL}/afterLogout`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ refreshToken: CookiesService.getRefreshToken() }),
             })
-            .then((response) => {
-                CookiesService.clearCookies();
-                window.location.href = '/login';
-            })
+                .then((response) => {
+                    CookiesService.clearCookies();
+                    window.location.href = '/login';
+                })
 
-           
+
             // window.location.href = '/login';
         })
 }
 
 function getAllUsers() {
-    return fetch('http://localhost:8080/user/all', {
+    return fetch(`${API_BASE_URL}/user/all`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -111,13 +111,34 @@ function getAllUsers() {
 }
 
 function deleteUser(id) {
-    
-    return fetch('http://localhost:8080/user/delete/' + id, {
+    return fetch(`${API_BASE_URL}/user/delete/` + id, {
         method: 'DELETE',
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ` + CookiesService.getAccessToken(),
         }
+    })
+}
+
+function updateNonLocked(userId, nonLocked){
+    return fetch(`${API_BASE_URL}/user/updateNonLocked`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + CookiesService.getAccessToken(),
+        },
+        body: JSON.stringify({userId, nonLocked}),
+    })
+}
+
+function updateRole(userId, role){
+    return fetch(`${API_BASE_URL}/user/updateRole`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + CookiesService.getAccessToken(),
+        },
+        body: JSON.stringify({userId, role}),
     })
 }
 
@@ -130,5 +151,7 @@ export const User = {
     updateUser,
     logout,
     getAllUsers,
-    deleteUser
+    deleteUser,
+    updateNonLocked,
+    updateRole
 }
