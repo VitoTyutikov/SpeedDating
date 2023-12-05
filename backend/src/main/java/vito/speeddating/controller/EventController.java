@@ -3,6 +3,8 @@ package vito.speeddating.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,53 +37,57 @@ public class EventController {
     }
 
     @GetMapping
-    public List<EventEntity> findAll() {
-        return eventService.findAll();
+    public ResponseEntity<List<EventEntity>> getAllEvents() {
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.findAll());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public EventEntity findById(Long id) {
-        return eventService.findById(id);
+    public ResponseEntity<EventEntity> findById(Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.findById(id));
     }
 
     @RequestMapping(value = "/active", method = RequestMethod.GET)
-    public List<EventEntity> findAllActive() {
-        return eventService.findByEventDateTimeAfter(LocalDateTime.now());
+    public ResponseEntity<List<EventEntity>> findAllActive() {
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.findByEventDateTimeAfter(LocalDateTime.now()));
     }
 
     @RequestMapping(value = "/upcoming", method = RequestMethod.GET)
-    public List<EventEntity> findAllUpcoming() {
-        return eventService.findByEventDateTimeBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+    public ResponseEntity<List<EventEntity>> findAllUpcoming() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(eventService.findByEventDateTimeBetween(LocalDateTime.now(), LocalDateTime.now().plusDays(7)));
     }
 
     @RequestMapping(value = "/past", method = RequestMethod.GET)
-    public List<EventEntity> findAllPast() {
-        return eventService.findByEventDateTimeBefore(LocalDateTime.now());
+    public ResponseEntity<List<EventEntity>> findAllPast() {
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.findByEventDateTimeBefore(LocalDateTime.now()));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public EventEntity addNewEvent(@RequestBody EventDTO eventDTO) {
-        return eventService.addNewEvent(eventDTO);
+    public ResponseEntity<EventEntity> addNewEvent(@RequestBody EventDTO eventDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.addNewEvent(eventDTO));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/registerUserToEvent", method = RequestMethod.POST)
-    public boolean registerUserToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
-        return eventService.addUserToEvent(registerUserToEventDTO.getUserId(), registerUserToEventDTO.getEventId());
+    public ResponseEntity<Boolean> registerUserToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                eventService.addUserToEvent(registerUserToEventDTO.getUserId(), registerUserToEventDTO.getEventId()));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/checkUserRegisteredToEvent", method = RequestMethod.POST)
-    public boolean checkUserRegisteredToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
-        return eventService.isUserRegisteredToEvent(registerUserToEventDTO.getUserId(),
-                registerUserToEventDTO.getEventId());
+    public ResponseEntity<Boolean> checkUserRegisteredToEvent(
+            @RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(eventService.isUserRegisteredToEvent(registerUserToEventDTO.getUserId(),
+                        registerUserToEventDTO.getEventId()));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/getUsersRegisteredToEvent/{eventId}", method = RequestMethod.GET)
-    public List<UserEntity> getUsersRegisteredToEvent(@PathVariable Long eventId) {
-        return eventService.getUsersRegisteredToEvent(eventId);
+    public ResponseEntity<List<UserEntity>> getUsersRegisteredToEvent(@PathVariable Long eventId) {
+        return ResponseEntity.status(HttpStatus.OK).body(eventService.getUsersRegisteredToEvent(eventId));
     }
 
 }

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import vito.speeddating.controller.AddBalanceDTO;
+import vito.speeddating.dto.AddBalanceDTO;
 import vito.speeddating.dto.ChangeRoleDTO;
 import vito.speeddating.dto.ChangeUserNonBlockDTO;
 import vito.speeddating.dto.UserDTO;
@@ -56,7 +56,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public String registerNewUser(@RequestBody UserDTO userDto) {
+    public UserEntity registerNewUser(@RequestBody UserDTO userDto) {
 
         try {
             if (userRepository.findByEmail(userDto.getEmail()).isPresent()
@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
                 throw new RuntimeException("Email or username already registered");
             }
         } catch (Exception e) {
-            return "Email or username already registered";
+            return null;
         }
 
         UserEntity user = new UserEntity();
@@ -82,7 +82,7 @@ public class UserService implements UserDetailsService {
         user.setCity(userDto.getCity());
 
         userRepository.save(user);
-        return "OK";
+        return user;
     }
 
     @Transactional

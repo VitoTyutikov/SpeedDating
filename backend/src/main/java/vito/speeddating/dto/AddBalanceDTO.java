@@ -1,4 +1,4 @@
-package vito.speeddating.controller;
+package vito.speeddating.dto;
 
 import lombok.Getter;
 import lombok.Setter;
