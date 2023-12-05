@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +20,6 @@ import vito.speeddating.dto.ChangeRoleDTO;
 import vito.speeddating.dto.ChangeUserNonBlockDTO;
 import vito.speeddating.dto.UserDTO;
 import vito.speeddating.entity.UserEntity;
-import vito.speeddating.security.TokenRequest;
 import vito.speeddating.service.UserService;
 
 @RequestMapping("/user")
@@ -90,5 +90,17 @@ public class UserController {
     @RequestMapping(value = "/topup", method = RequestMethod.PUT)
     public ResponseEntity<UserEntity> updateBalance(@RequestBody AddBalanceDTO user) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateBalance(user));
+    }
+
+    @PutMapping("/profile-picture/{userId}")
+    public ResponseEntity<?> updateUserProfilePicture(@PathVariable Long userId,
+            @RequestBody String profilePictureUrl) {
+        // Find user by userId and set the profilePicture field
+        // Save the user entity
+        // Return an appropriate response
+        UserEntity user = userService.findById(userId);
+        user.setProfilePicture(profilePictureUrl);
+        userService.save(user);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }

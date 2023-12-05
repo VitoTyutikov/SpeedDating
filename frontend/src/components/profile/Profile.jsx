@@ -3,10 +3,39 @@ import { useState, useEffect } from 'react';
 import { User } from '../../service/api/User';
 import apiRequest from '../../service/api/ApiRequest';
 import UserProfileDetail from './UserProfileDetail';
+import axios from 'axios';
+import FileUpload from '../file/FileUpload';
+import { CookiesService } from '../../service/cookies/Cookies';
+import styles from './Profile.module.css'
 function Profile() {
     const [editMode, setEditMode] = useState(false);
     const user = useUser();
+    const [profilePictureUrl, setProfilePictureUrl] = useState('');
 
+    const handleUpload = (url) => {
+        fetch(`http://localhost:8080/user/profile-picture/${user.id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + CookiesService.getAccessToken(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(url)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                setProfilePictureUrl(url);
+                console.log(url);
+                setFormData(prevData => ({
+                    ...prevData,
+                    profilePicture: url
+                }));
+            })
+            .catch(error => {
+                console.error('Error updating profile picture:', error);
+            });
+    };
     const [formData, setFormData] = useState({
         username: '',
         firstName: '',
@@ -33,6 +62,7 @@ function Profile() {
                 bio: user.bio || '',
                 city: user.city || '',
             });
+            setProfilePictureUrl(user.profilePicture || '');
         }
     }, [user]);
 
@@ -60,7 +90,8 @@ function Profile() {
 
         setEditMode(false);
     };
-    const renderUserInfo = () => (//TODO: add confirmation
+    // console.log(user.profilePicture);
+    const renderUserInfo = () => (
         <>
             {editMode ? (
                 <form onSubmit={handleSubmit}>
@@ -83,7 +114,10 @@ function Profile() {
                 </form>
             ) : (
                 <>
-                    <img src={user.profilePicture} alt="Profile" className="profile-picture" />
+                    <div>
+                        <FileUpload onUpload={handleUpload} />
+                        {profilePictureUrl && <img src={profilePictureUrl.replace(/"/g, '')} alt="Profile" className={styles.profilePicture}/>}
+                    </div>
                     <h1>{user.username}</h1>
                     <UserProfileDetail label="Name" value={`${user.firstName} ${user.lastName}`} />
                     <UserProfileDetail label="Email" value={user.email} />

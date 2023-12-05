@@ -1,4 +1,4 @@
-import './Profile.module.css';
+import styles from './Profile.module.css';
 import { User } from '../../service/api/User';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -35,7 +35,7 @@ function UserProfile() {//TODO: add send message if userId!= cookies.userId
         <div className="profile">
             {user ? (
                 <>
-                    <img src={user.profilePicture} alt="Profile" className="profile-picture" />
+                    <img src={user.profilePicture.replace(/"/g, '')} alt="Profile" className={styles.profilePicture} />
                     <h1>{user.username}</h1>
                     <UserProfileDetail label="Name" value={`${user.firstName} ${user.lastName}`} />
                     <UserProfileDetail label="Email" value={user.email} />
@@ -45,7 +45,7 @@ function UserProfile() {//TODO: add send message if userId!= cookies.userId
                     <UserProfileDetail label="Bio" value={user.bio} />
                     <UserProfileDetail label="Date Joined" value={user.dateJoined} />
                     <UserProfileDetail label="Role" value={user.role} />
-                    
+
                 </>
             ) : (
                 <p>Loading...</p>

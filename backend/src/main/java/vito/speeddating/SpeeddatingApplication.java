@@ -31,7 +31,7 @@ public class SpeeddatingApplication {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 		createUser("test", "Test", "Testovich", "test.doe@example.com", passwordEncoder.encode("test"), "Male",
-				"default.jpg", LocalDate.of(2002, 3, 28), "I am a software engineer.", LocalDate.now(), "New York",
+				"http://localhost:8080/download/image_2023-11-28_08-38-31.png", LocalDate.of(2002, 3, 28), "I am a software engineer.", LocalDate.now(), "New York",
 				"40.7128, -74.0060",
 				"ADMIN", true, 10000.0);
 

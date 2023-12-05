@@ -42,6 +42,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/authenticate", "/refresh", "/user/register", "/logout", "/afterLogout")
                         .permitAll()
+                        .requestMatchers("/download/**")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .logout((logout) -> logout
                         .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
