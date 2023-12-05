@@ -139,6 +139,17 @@ function updateRole(userId, role) {
     })
 }
 
+function updateBalance(userId, amount) {
+    return fetch(`${API_BASE_URL}/user/updateBalance`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + CookiesService.getAccessToken(),
+        },
+        body: JSON.stringify({ userId, amount }),
+    })
+}
+
 export const User = {
     login,
     signup,
@@ -150,5 +161,6 @@ export const User = {
     getAllUsers,
     deleteUser,
     updateNonLocked,
-    updateRole
+    updateRole,
+    updateBalance
 }

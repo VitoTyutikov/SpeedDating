@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -78,8 +79,8 @@ public class EventController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @RequestMapping(value = "/getUsersRegisteredToEvent", method = RequestMethod.GET)
-    public List<UserEntity> getUsersRegisteredToEvent(@RequestParam Long eventId) {
+    @RequestMapping(value = "/getUsersRegisteredToEvent/{eventId}", method = RequestMethod.GET)
+    public List<UserEntity> getUsersRegisteredToEvent(@PathVariable Long eventId) {
         return eventService.getUsersRegisteredToEvent(eventId);
     }
 

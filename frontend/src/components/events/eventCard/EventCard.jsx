@@ -19,7 +19,6 @@ function EventCard({ event }) {
   const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
-
     apiRequest(Event.checkUserRegisteredToEvent, event.id)
       .then((response) => {
         if (!response.ok) {
@@ -35,6 +34,16 @@ function EventCard({ event }) {
       });
   }, [event.id]);
 
+  const [registeredUsers, setRegisteredUsers] = useState([]);
+
+  const fetchRegisteredUsers = () => {
+    apiRequest(Event.getUsersRegisteredToEvent, event.id)
+      .then(response => response.json())
+      .then(users => setRegisteredUsers(users))
+      .catch(error => console.error('Error fetching registered users:', error));
+  };
+
+
   const handleClick = () => {
     apiRequest(Event.registerToEvent, event.id)
       .then((response) => {
@@ -44,38 +53,39 @@ function EventCard({ event }) {
         return response.json();
       })
       .then((data) => {
-        // Assuming the API returns some data indicating success,
-        // Update the isRegistered state to hide the button
         setIsRegistered(true);
       })
       .catch((error) => {
         console.error('Register to event failed:', error);
         alert('Register to event failed. Please try again.');
       });
+      handleEgtRegisteredUsers();
   };
   const [showRegisteredUsers, setShowRegisteredUsers] = useState(false);
   const handleEgtRegisteredUsers = () => {
+    fetchRegisteredUsers();
+    console.log(registeredUsers);
     setShowRegisteredUsers(!showRegisteredUsers);
   }
 
 
   return (
-    <div className={styles['event-card-container']}>
-      <div className={styles['event-card']}>
+    <div className={styles.container}>
+      <div className={styles.card}>
         <h2>{event.title} {!isFuture && <span className="ended-text">(Ended)</span>}</h2>
         <p>{dateObj.toLocaleString()}</p>
         <p>{event.address}</p>
         <p>{`Price: $${event.price}`}</p>
-        {( isFuture && !isRegistered && <button onClick={handleClick}>Register to events</button>) || (!isFuture && <br />)}
-        {( isFuture && <button onClick={handleEgtRegisteredUsers}>Show Registered Users</button>) || (!isFuture && <br />)}
+        {(isFuture && !isRegistered && <button onClick={handleClick}>Register to events</button>) || (!isFuture && <br />)}
+         <button onClick={handleEgtRegisteredUsers}>Show Registered Users</button>
         {/* {!isFuture && <br />} */}
         {/* {isLoggedIn && !isFuture && <p>Event has ended</p>} */}
       </div>
       {showRegisteredUsers && (
-        <div className={styles['registered-users']}>
+        <div className={styles.registeredUsers}>
           <h3>Registered Users</h3>
           <ul>
-            {event.registeredUsers.map((user) => (
+            {registeredUsers.map((user) => (
               <li key={user.id}>
                 <NavLink to={CookiesService.getUserId() === user.id ? '/profile' : `/user/${user.id}`}>{CookiesService.getUserId() === user.id ? 'You' : user.username}</NavLink>
               </li>

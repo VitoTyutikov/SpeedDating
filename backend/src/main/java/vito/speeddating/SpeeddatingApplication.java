@@ -1,6 +1,7 @@
 package vito.speeddating;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -8,13 +9,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.annotation.PostConstruct;
+import vito.speeddating.entity.EventEntity;
 import vito.speeddating.entity.UserEntity;
+import vito.speeddating.service.EventService;
 import vito.speeddating.service.UserService;
 
 @SpringBootApplication
 public class SpeeddatingApplication {
 	@Autowired
 	UserService userService;
+	@Autowired
+	EventService eventService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpeeddatingApplication.class, args);
@@ -23,78 +28,64 @@ public class SpeeddatingApplication {
 	@PostConstruct
 	void setUp() {
 		userService.deleteAll();
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+		createUser("test", "Test", "Testovich", "test.doe@example.com", passwordEncoder.encode("test"), "Male",
+				"default.jpg", LocalDate.of(2002, 3, 28), "I am a software engineer.", LocalDate.now(), "New York",
+				"40.7128, -74.0060",
+				"ADMIN", true, 10000.0);
+
+		createUser("admin", "Admin", "Administrator", "admin.doe@example.com", passwordEncoder.encode("admin"), "Male",
+				"default.jpg", LocalDate.of(1990, 1, 1), "I am the admin.", LocalDate.now(), "New York",
+				"40.7128, -74.0060",
+				"ADMIN", true, 10000.0);
+
+		createUser("user", "User", "Userson", "user.doe@example.com", passwordEncoder.encode("user"), "Female",
+				"default.jpg", LocalDate.of(1995, 5, 15), "I am a regular user.", LocalDate.now(), "Boston",
+				"42.3601, -71.0589",
+				"USER", true, 10000.0);
+
+		createUser("anotheruser", "Another", "User", "another.user@example.com", passwordEncoder.encode("another"),
+				"Male", "default.jpg", LocalDate.of(1998, 8, 18), "I am another regular user.", LocalDate.now(),
+				"San Francisco", "37.7749, -122.4194",
+				"USER", false, 10000.0);
+
+		createEvent("Test Event", LocalDateTime.now().plusDays(10), "123 Main Street", 10.0);
+		createEvent("Test Event 2", LocalDateTime.now().plusDays(20), "123 Main Street", 25.0);
+		createEvent("Another Event", LocalDateTime.now().plusDays(15), "123 Main Street", 100.0);
+
+	}
+
+	void createUser(String username, String firstName, String lastName, String email, String encodedPassword,
+			String gender,
+			String profilePicture, LocalDate dateOfBirth, String bio, LocalDate dateJoined, String city,
+			String location, String role, boolean accountNonLocked, double balance) {
 
 		UserEntity user = new UserEntity();
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String encodedPassword = passwordEncoder.encode("test");
-		user.setUsername("test");
-		user.setFirstName("Test");
-		user.setLastName("Testovich");
-		user.setEmail("test.doe@example.com");
+		user.setUsername(username);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setEmail(email);
 		user.setPassword(encodedPassword);
-		user.setGender("Male");
-		user.setProfilePicture("default.jpg");
-		user.setDateOfBirth(LocalDate.of(2002, 3, 28));
-		user.setBio("I am a software engineer.");
-		user.setDateJoined(LocalDate.now());
-		user.setCity("New York");
-		user.setLocation("40.7128, -74.0060");
-		user.setRole("ADMIN");
-		user.setAccountNonLocked(true);
+		user.setGender(gender);
+		user.setProfilePicture(profilePicture);
+		user.setDateOfBirth(dateOfBirth);
+		user.setBio(bio);
+		user.setDateJoined(dateJoined);
+		user.setCity(city);
+		user.setLocation(location);
+		user.setRole(role);
+		user.setAccountNonLocked(accountNonLocked);
+		user.setBalance(balance);
 		userService.save(user);
+	}
 
-		UserEntity adminUser = new UserEntity();
-		String adminEncodedPassword = passwordEncoder.encode("admin");
-		adminUser.setUsername("admin");
-		adminUser.setFirstName("Admin");
-		adminUser.setLastName("Administrator");
-		adminUser.setEmail("admin.doe@example.com");
-		adminUser.setPassword(adminEncodedPassword);
-		adminUser.setGender("Male");
-		adminUser.setProfilePicture("default.jpg");
-		adminUser.setDateOfBirth(LocalDate.of(1990, 1, 1));
-		adminUser.setBio("I am the admin.");
-		adminUser.setDateJoined(LocalDate.now());
-		adminUser.setCity("New York");
-		adminUser.setLocation("40.7128, -74.0060");
-		adminUser.setRole("ADMIN");
-		adminUser.setAccountNonLocked(true);
-		userService.save(adminUser);
-
-		UserEntity regularUser = new UserEntity();
-		String userEncodedPassword = passwordEncoder.encode("user");
-		regularUser.setUsername("user");
-		regularUser.setFirstName("User");
-		regularUser.setLastName("Userson");
-		regularUser.setEmail("user.doe@example.com");
-		regularUser.setPassword(userEncodedPassword);
-		regularUser.setGender("Female");
-		regularUser.setProfilePicture("default.jpg");
-		regularUser.setDateOfBirth(LocalDate.of(1995, 5, 15));
-		regularUser.setBio("I am a regular user.");
-		regularUser.setDateJoined(LocalDate.now());
-		regularUser.setCity("Boston");
-		regularUser.setLocation("42.3601, -71.0589");
-		regularUser.setRole("USER");
-		regularUser.setAccountNonLocked(true);
-		userService.save(regularUser);
-
-		UserEntity anotherUser = new UserEntity();
-		String anotherEncodedPassword = passwordEncoder.encode("another");
-		anotherUser.setUsername("anotheruser");
-		anotherUser.setFirstName("Another");
-		anotherUser.setLastName("Userovich");
-		anotherUser.setEmail("another.user@example.com");
-		anotherUser.setPassword(anotherEncodedPassword);
-		anotherUser.setGender("Non-binary");
-		anotherUser.setProfilePicture("default.jpg");
-		anotherUser.setDateOfBirth(LocalDate.of(1998, 8, 18));
-		anotherUser.setBio("I am another regular user.");
-		anotherUser.setDateJoined(LocalDate.now());
-		anotherUser.setCity("San Francisco");
-		anotherUser.setLocation("37.7749, -122.4194"); 
-		anotherUser.setRole("USER");
-		anotherUser.setAccountNonLocked(false);
-		userService.save(anotherUser);
+	void createEvent(String name, LocalDateTime evenDateTime, String address, double price) {
+		EventEntity event = new EventEntity();
+		event.setTitle(name);
+		event.setEventDateTime(evenDateTime);
+		event.setAddress(address);
+		event.setPrice(price);
+		eventService.save(event);
 	}
 }

@@ -73,6 +73,11 @@ public class EventService {
         if (event.getRegisteredUsers().contains(user)) {
             return false;
         }
+        if(user.getBalance() < event.getPrice()){
+            throw new IllegalStateException("User does not have enough balance");
+        } else{
+            user.setBalance(user.getBalance() - event.getPrice());
+        }
         event.getRegisteredUsers().add(user);
         eventRepository.save(event);
         return true;

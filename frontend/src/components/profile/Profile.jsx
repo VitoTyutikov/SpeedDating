@@ -2,7 +2,7 @@ import useUser from '../../hooks/useUser';
 import { useState, useEffect } from 'react';
 import { User } from '../../service/api/User';
 import apiRequest from '../../service/api/ApiRequest';
-
+import UserProfileDetail from './UserProfileDetail';
 function Profile() {
     const [editMode, setEditMode] = useState(false);
     const user = useUser();
@@ -60,7 +60,6 @@ function Profile() {
 
         setEditMode(false);
     };
-
     const renderUserInfo = () => (//TODO: add confirmation
         <>
             {editMode ? (
@@ -93,6 +92,8 @@ function Profile() {
                     <UserProfileDetail label="Date of Birth" value={user.dateOfBirth} />
                     <UserProfileDetail label="Bio" value={user.bio} />
                     <UserProfileDetail label="Date Joined" value={user.dateJoined} />
+                    <UserProfileDetail label="Balance" value={user.balance} />
+                    <UserProfileDetail label="Role" value={user.role} />
                     <button onClick={handleEditToggle}>Edit</button>
                 </>
             )}
@@ -104,12 +105,5 @@ function Profile() {
     return <div className="profile">{userInfo || <p>Loading...</p>}</div>;
 }
 
-function UserProfileDetail({ label, value }) {
-    return (
-        <p>
-            <strong>{label}:</strong> {value}
-        </p>
-    );
-}
 
 export default Profile;

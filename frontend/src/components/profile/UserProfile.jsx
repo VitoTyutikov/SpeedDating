@@ -3,10 +3,9 @@ import { User } from '../../service/api/User';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import apiRequest from '../../service/api/ApiRequest';
+import UserProfileDetail from './UserProfileDetail';
 // import { CookiesService } from '../../service/cookies/Cookies';
 function UserProfile() {//TODO: add send message if userId!= cookies.userId
-
-
 
     const { id } = useParams();
 
@@ -28,45 +27,31 @@ function UserProfile() {//TODO: add send message if userId!= cookies.userId
                     console.error('Error fetching user:', error);
                 })
         };
-
         fetchUser();
     }, [id]);
+
+
     return (
         <div className="profile">
             {user ? (
-                <div>
-                    <img
-                        src={user.profilePicture}
-                        alt="Profile"
-                        className="profile-picture"
-                    />
+                <>
+                    <img src={user.profilePicture} alt="Profile" className="profile-picture" />
                     <h1>{user.username}</h1>
-                    <p>
-                        <strong>Name:</strong> {user.firstName} {user.lastName}
-                    </p>
-                    <p>
-                        <strong>Email:</strong> {user.email}
-                    </p>
-                    <p>
-                        <strong>Gender:</strong> {user.gender}
-                    </p>
-                    <p>
-                        <strong>City:</strong> {user.city}
-                    </p>
-                    <p>
-                        <strong>Date of Birth:</strong> {user.dateOfBirth}
-                    </p>
-                    <p>
-                        <strong>Bio:</strong> {user.bio}
-                    </p>
-                    <p>
-                        <strong>Date Joined:</strong> {user.dateJoined}
-                    </p>
-                </div>
+                    <UserProfileDetail label="Name" value={`${user.firstName} ${user.lastName}`} />
+                    <UserProfileDetail label="Email" value={user.email} />
+                    <UserProfileDetail label="Gender" value={user.gender} />
+                    <UserProfileDetail label="City" value={user.city} />
+                    <UserProfileDetail label="Date of Birth" value={user.dateOfBirth} />
+                    <UserProfileDetail label="Bio" value={user.bio} />
+                    <UserProfileDetail label="Date Joined" value={user.dateJoined} />
+                    <UserProfileDetail label="Role" value={user.role} />
+                    
+                </>
             ) : (
                 <p>Loading...</p>
             )}
         </div>
+
     );
 }
 

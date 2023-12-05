@@ -79,4 +79,10 @@ public class UserController {
         return userService.updateRole(user);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @RequestMapping(value = "/topup",method = RequestMethod.PUT)
+    public UserEntity updateBalance(@RequestBody AddBalanceDTO user) {
+        return userService.updateBalance(user);
+    }
 }

@@ -29,7 +29,7 @@ public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -64,19 +64,21 @@ public class UserEntity implements UserDetails {
     private String city;
 
     @Column
-    private String location;//point on the map for add people around
+    private String location;// point on the map for add people around
 
     @Column(nullable = false)
-    private String role="USER";
+    private String role = "USER";
 
     @Column
-    boolean isAccountNonLocked=true;
+    private Double balance = 0.0;
+
+    @Column
+    boolean isAccountNonLocked = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role));
     }
-
 
     @Override
     public boolean isAccountNonExpired() {
@@ -98,5 +100,4 @@ public class UserEntity implements UserDetails {
         return true;
     }
 
-    
 }

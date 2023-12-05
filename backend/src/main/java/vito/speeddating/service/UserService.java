@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import vito.speeddating.controller.AddBalanceDTO;
 import vito.speeddating.dto.ChangeRoleDTO;
 import vito.speeddating.dto.ChangeUserNonBlockDTO;
 import vito.speeddating.dto.UserDTO;
@@ -168,6 +169,20 @@ public class UserService implements UserDetailsService {
                     .orElseThrow(
                             () -> new UsernameNotFoundException("User not found with id: " + user.getUserId()));
             userEntity.setRole(user.getRole());
+            save(userEntity);
+            return userEntity;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Transactional
+    public UserEntity updateBalance(AddBalanceDTO user) {
+        try {
+            UserEntity userEntity = userRepository.findById(user.getUserId())
+                    .orElseThrow(
+                            () -> new UsernameNotFoundException("User not found with id: " + user.getUserId()));
+            userEntity.setBalance(userEntity.getBalance() + user.getAmount());
             save(userEntity);
             return userEntity;
         } catch (Exception e) {
