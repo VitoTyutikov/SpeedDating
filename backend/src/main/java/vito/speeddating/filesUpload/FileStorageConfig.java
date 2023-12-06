@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(FileStorageProperties.class)
 public class FileStorageConfig {
-    // ...
+
 }

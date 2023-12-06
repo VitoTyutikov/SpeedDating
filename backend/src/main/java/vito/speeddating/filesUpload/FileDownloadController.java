@@ -19,9 +19,6 @@ public class FileDownloadController {
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            System.out.println(filePath);
-            System.out.println("Current working directory: " + new File(".").getAbsolutePath());
-
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return ResponseEntity.ok().body(resource);

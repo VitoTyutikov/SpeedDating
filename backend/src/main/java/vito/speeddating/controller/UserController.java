@@ -95,9 +95,6 @@ public class UserController {
     @PutMapping("/profile-picture/{userId}")
     public ResponseEntity<?> updateUserProfilePicture(@PathVariable Long userId,
             @RequestBody String profilePictureUrl) {
-        // Find user by userId and set the profilePicture field
-        // Save the user entity
-        // Return an appropriate response
         UserEntity user = userService.findById(userId);
         user.setProfilePicture(profilePictureUrl);
         userService.save(user);

@@ -31,7 +31,7 @@ public class SpeeddatingApplication {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 		createUser("test", "Test", "Testovich", "test.doe@example.com", passwordEncoder.encode("test"), "Male",
-				"http://localhost:8080/download/image_2023-11-28_08-38-31.png", LocalDate.of(2002, 3, 28), "I am a software engineer.", LocalDate.now(), "New York",
+				"default.jpg", LocalDate.of(2002, 3, 28), "I am a software engineer.", LocalDate.now(), "New York",
 				"40.7128, -74.0060",
 				"ADMIN", true, 10000.0);
 
@@ -52,7 +52,7 @@ public class SpeeddatingApplication {
 
 		createEvent("Test Event", LocalDateTime.now().plusDays(10), "123 Main Street", 10.0);
 		createEvent("Test Event 2", LocalDateTime.now().plusDays(20), "123 Main Street", 25.0);
-		createEvent("Another Event", LocalDateTime.now().plusDays(15), "123 Main Street", 100.0);
+		createEvent("Another Event", LocalDateTime.now().minusDays(15), "123 Main Street", 100.0);
 
 	}
 

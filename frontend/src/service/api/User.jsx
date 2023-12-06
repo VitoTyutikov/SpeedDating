@@ -140,7 +140,7 @@ function updateRole(userId, role) {
 }
 
 function updateBalance(userId, amount) {
-    return fetch(`${API_BASE_URL}/user/updateBalance`, {
+    return fetch(`${API_BASE_URL}/user/topup`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json",

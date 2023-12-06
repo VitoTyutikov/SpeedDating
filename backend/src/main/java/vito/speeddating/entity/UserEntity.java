@@ -64,7 +64,7 @@ public class UserEntity implements UserDetails {
     private String city;
 
     @Column
-    private String location;// point on the map for add people around
+    private String location;
 
     @Column(nullable = false)
     private String role = "USER";

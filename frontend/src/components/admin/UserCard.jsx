@@ -23,7 +23,7 @@ function UserCard({ user, onDeleteUser, onToggleNonLocked, onChangeRole }) {
             <div className={css.cell}>{userDetails.lastName}</div>
             <div className={css.cell}>{userDetails.email}</div>
             <div className={css.cell}>{userDetails.gender}</div>
-            <div className={css.cell}>{userDetails.profilePicture}</div>
+            <img src={userDetails.profilePicture} alt="Profile" className={css.image} />
             <div className={css.cell}>{userDetails.dateOfBirth}</div>
             <div className={css.cell}>{userDetails.bio}</div>
             <div className={css.cell}>{userDetails.dateJoined}</div>

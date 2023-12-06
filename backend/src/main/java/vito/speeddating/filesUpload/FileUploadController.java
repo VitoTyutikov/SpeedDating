@@ -1,6 +1,5 @@
 package vito.speeddating.filesUpload;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +21,6 @@ public class FileUploadController {
                 .path("/download/")
                 .path(fileName)
                 .toUriString();
-        System.out.println(fileDownloadUri);
         return fileDownloadUri;
     }
 }

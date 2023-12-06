@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom';
 import { CookiesService } from '../../../service/cookies/Cookies';
 import apiRequest from '../../../service/api/ApiRequest';
 function EventCard({ event }) {
-  // const isLoggedIn = useLoggedIn();
   let dateStr = event.eventDateTime;
   let dateParts = dateStr.split("T");
 
@@ -64,7 +63,6 @@ function EventCard({ event }) {
   const [showRegisteredUsers, setShowRegisteredUsers] = useState(false);
   const handleEgtRegisteredUsers = () => {
     fetchRegisteredUsers();
-    console.log(registeredUsers);
     setShowRegisteredUsers(!showRegisteredUsers);
   }
 
@@ -78,8 +76,6 @@ function EventCard({ event }) {
         <p>{`Price: $${event.price}`}</p>
         {(isFuture && !isRegistered && <button onClick={handleClick}>Register to events</button>) || (!isFuture && <br />)}
          <button onClick={handleEgtRegisteredUsers}>Show Registered Users</button>
-        {/* {!isFuture && <br />} */}
-        {/* {isLoggedIn && !isFuture && <p>Event has ended</p>} */}
       </div>
       {showRegisteredUsers && (
         <div className={styles.registeredUsers}>

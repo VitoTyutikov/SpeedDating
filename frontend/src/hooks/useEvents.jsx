@@ -25,7 +25,7 @@ function useEvents() {
                     navigate('/login');
                 })
         }
-
+        // eslint-disable-next-line
     }, [isLoggedIn]);
 
 
