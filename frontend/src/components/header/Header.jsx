@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import useLoggedIn from '../../hooks/useLoggedIn';
 import css from './Header.module.css';
 import LoggedInHeader from './LoggedInHeader';

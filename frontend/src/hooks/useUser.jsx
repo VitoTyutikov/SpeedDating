@@ -26,8 +26,9 @@ function useUser() {
                     navigate('/login');
                 })
         }
+        // eslint-disable-next-line
     }, [isLoggedIn]);
-        
+
     return user;
 }
 
