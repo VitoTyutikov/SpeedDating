@@ -1,6 +1,5 @@
 package vito.speeddating.filesUpload;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +14,6 @@ public class FileUploadController {
         this.fileStorageService = fileStorageService;
     }
 
-    // @CrossOrigin
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);

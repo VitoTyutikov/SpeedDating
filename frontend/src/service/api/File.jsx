@@ -2,7 +2,7 @@ import { API_BASE_URL } from "./apiConst"
 import { CookiesService } from "../cookies/Cookies"
 
 function uploadFile(formData) {
-    return fetch('http://localhost:8080/upload', {
+    return fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + CookiesService.getAccessToken(),

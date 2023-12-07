@@ -63,7 +63,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerNewUser(userDto));
     }
 
-    // @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id) {
         userService.delete(userService.findById(id));
@@ -74,19 +74,19 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(user));
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/updateNonLocked", method = RequestMethod.PUT)
     public ResponseEntity<UserEntity> updateNonBlocked(@RequestBody ChangeUserNonBlockDTO user) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateNonLocked(user));
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/updateRole", method = RequestMethod.PUT)
     public ResponseEntity<UserEntity> updateRole(@RequestBody ChangeRoleDTO user) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateRole(user));
     }
 
-    // @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/topup", method = RequestMethod.PUT)
     public ResponseEntity<UserEntity> updateBalance(@RequestBody AddBalanceDTO user) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateBalance(user));

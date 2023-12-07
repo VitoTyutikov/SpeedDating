@@ -38,6 +38,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf((csrf) -> csrf.disable())
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/authenticate", "/refresh", "/user/register", "/logout", "/afterLogout")
                         .permitAll()
@@ -51,9 +52,6 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors()
-                .configurationSource(corsConfigurationSource())
-                .and()
                 .build();
     }
 
