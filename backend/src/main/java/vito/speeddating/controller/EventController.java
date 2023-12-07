@@ -61,20 +61,20 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.OK).body(eventService.findByEventDateTimeBefore(LocalDateTime.now()));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    // @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<EventEntity> addNewEvent(@RequestBody EventDTO eventDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(eventService.addNewEvent(eventDTO));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    // @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/registerUserToEvent", method = RequestMethod.POST)
     public ResponseEntity<Boolean> registerUserToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 eventService.addUserToEvent(registerUserToEventDTO.getUserId(), registerUserToEventDTO.getEventId()));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    // @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/checkUserRegisteredToEvent", method = RequestMethod.POST)
     public ResponseEntity<Boolean> checkUserRegisteredToEvent(
             @RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
@@ -83,7 +83,7 @@ public class EventController {
                         registerUserToEventDTO.getEventId()));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    // @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/getUsersRegisteredToEvent/{eventId}", method = RequestMethod.GET)
     public ResponseEntity<List<UserEntity>> getUsersRegisteredToEvent(@PathVariable Long eventId) {
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getUsersRegisteredToEvent(eventId));
