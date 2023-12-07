@@ -15,7 +15,7 @@ public class FileUploadController {
         this.fileStorageService = fileStorageService;
     }
 
-    @CrossOrigin
+    // @CrossOrigin
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);

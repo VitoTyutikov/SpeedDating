@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FileDownloadController {
     private final Path fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
 
-    @CrossOrigin
+    // @CrossOrigin
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
         try {
