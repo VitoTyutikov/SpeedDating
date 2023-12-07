@@ -4,7 +4,7 @@ WORKDIR /build_stage
 COPY package.json ./
 
 RUN npm install -g npm@10.2.4
-RUN npm install --silent
+RUN npm install
 COPY . .
 RUN npm run build
 
