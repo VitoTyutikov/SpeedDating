@@ -8,9 +8,9 @@ const Login = () => {
         event.preventDefault();
         User.login(username, password)
             .then((response) => {
-                if (response.ok) {
-                    window.location.href = '/profile';
-                }
+                // if (response.ok) {
+                window.location.href = '/profile';
+                // }
             })
             .catch((error) => {
                 console.error('Login failed:', error);
