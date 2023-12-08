@@ -1,11 +1,14 @@
 import { NavLink } from 'react-router-dom';
-import css from './Header.module.css';
+import Button from '@mui/material/Button';
 
 const LoggedOutHeader = () => {
-    return <>
-        <NavLink to='/login' className={css.NavLink}>Login</NavLink>
-        <NavLink to='/register' className={css.NavLink}>Register</NavLink>
-    </>
+    return (
+        <>
+            <Button color="inherit" component={NavLink} to="/login">Login</Button>
+            <Button color="inherit" component={NavLink} to="/register">Register</Button>
+        </>
+    );
+
 }
 
 export default LoggedOutHeader;

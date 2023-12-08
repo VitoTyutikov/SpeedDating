@@ -1,9 +1,13 @@
-// import { useEffect, useState } from 'react';
 import useLoggedIn from '../../hooks/useLoggedIn';
-import css from './Header.module.css';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import LoggedInHeader from './LoggedInHeader';
 import LoggedOutHeader from './LoggedOutHeader';
 import AdminHeader from './AdminHeader';
+import logo from '../../logo.png';
+
 function Header() {
     const isLoggedIn = useLoggedIn();
 
@@ -17,11 +21,16 @@ function Header() {
     }
 
     return (
-        <nav className={css.header}>
-            {headerComponent}
-        </nav>
+        <AppBar position="static">
+            <Toolbar>
+                <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+                    <img src={logo} alt="Logo" style={{ marginRight: '10px' , width: '50px', height: '50px' }} />
+                    <Typography variant="h6">NeTinder</Typography>
+                </Box>
+                {headerComponent}
+            </Toolbar>
+        </AppBar>
     );
 }
-
 
 export default Header;

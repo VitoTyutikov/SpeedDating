@@ -4,8 +4,9 @@ import { User } from '../../service/api/User';
 import apiRequest from '../../service/api/ApiRequest';
 import UserProfileDetail from './UserProfileDetail';
 import FileUpload from '../file/FileUpload';
-import styles from './Profile.module.css'
+
 import { File } from '../../service/api/File';
+import { Card, CardContent, Grid, Typography, Button, TextField } from '@mui/material';
 function Profile() {
     const [editMode, setEditMode] = useState(false);
     const user = useUser();
@@ -99,49 +100,105 @@ function Profile() {
             })
 
     }
+    const renderEditForm = () => (
+        <form onSubmit={handleSubmit}>
+            <TextField
+                label="First Name"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="Last Name"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="City"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+            />
+            <TextField
+                label="Date of Birth"
+                name="dateOfBirth"
+                type="date"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+            />
+            <TextField
+                label="Bio"
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                fullWidth
+                multiline
+                margin="normal"
+            />
+            <Button type="submit" variant="contained" color="primary" fullWidth >
+                Save Changes
+            </Button>
+            <Button variant="outlined" color='primary' onClick={handleEditToggle} fullWidth  >
+                Cancel
+            </Button>
+        </form>
+    );
 
     const renderUserInfo = () => (
-        <>
-            {editMode ? (
-                <form onSubmit={handleSubmit}>
-                    <p>
-                        <strong>Profile Picture:</strong>
-                        <input type="text" name="profilePicture" value={formData.profilePicture} onChange={handleChange} />
-                        <strong>FirstName:</strong>
-                        <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
-                        <strong>LastName:</strong>
-                        <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
-                        <strong>City:</strong>
-                        <input type="text" name="city" value={formData.city} onChange={handleChange} />
-                        <strong>Date of Birth:</strong>
-                        <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
-                        <strong>Bio:</strong>
-                        <input type="text" name="bio" value={formData.bio} onChange={handleChange} />
-                    </p>
-                    <button type="submit" onClick={handleSubmit}>Save</button>
-                    <button type="button" onClick={handleEditToggle}>Cancel</button>
-                </form>
-            ) : (
-                <>
-                    <div>
+        <Grid container justifyContent="center" spacing={2}>
+            <Grid item xs={11}>
+                <Card>
+                    <CardContent>
+                        <Typography variant="h5" align="center">{user.username}</Typography>
+
+                        {profilePictureUrl && (
+                            <img src={profilePictureUrl.replace(/"/g, '')} alt="Profile" style={{ width: '15%', height: '15 %', borderRadius: '50%', margin: '10px auto', display: 'block' }} />
+                        )}
+
                         <FileUpload onUpload={handleUpload} />
-                        {profilePictureUrl && <img src={profilePictureUrl.replace(/"/g, '')} alt="Profile" className={styles.profilePicture} />}
-                    </div>
-                    <h1>{user.username}</h1>
-                    <UserProfileDetail label="Name" value={`${user.firstName} ${user.lastName}`} />
-                    <UserProfileDetail label="Email" value={user.email} />
-                    <UserProfileDetail label="Gender" value={user.gender} />
-                    <UserProfileDetail label="City" value={user.city} />
-                    <UserProfileDetail label="Date of Birth" value={user.dateOfBirth} />
-                    <UserProfileDetail label="Bio" value={user.bio} />
-                    <UserProfileDetail label="Date Joined" value={user.dateJoined} />
-                    <UserProfileDetail label="Balance" value={user.balance} />
-                    <UserProfileDetail label="Role" value={user.role} />
-                    <button onClick={handleEditBalance}>Top-Up Balance for 100</button>
-                    <button onClick={handleEditToggle}>Edit Profile</button>
-                </>
-            )}
-        </>
+
+                        {!editMode ? (
+                            <>
+                                <UserProfileDetail label="Name" value={`${user.firstName} ${user.lastName}`} />
+                                <UserProfileDetail label="Email" value={user.email} />
+                                <UserProfileDetail label="Gender" value={user.gender} />
+                                <UserProfileDetail label="City" value={user.city} />
+                                <UserProfileDetail label="Date of Birth" value={user.dateOfBirth} />
+                                <UserProfileDetail label="Bio" value={user.bio} />
+                                <UserProfileDetail label="Date Joined" value={user.dateJoined} />
+                                <UserProfileDetail label="Role" value={user.role} />
+                                <UserProfileDetail label="Balance" value={user.balance} />
+                                <Button variant="contained" color="primary" onClick={handleEditToggle} fullWidth>Edit Profile</Button>
+                            </>
+                        ) : (
+                            renderEditForm()
+                        )}
+                        <Button variant="contained" color="primary" onClick={handleEditBalance} fullWidth>Top Up Balance $100</Button>
+                       
+                    </CardContent>
+                </Card>
+            </Grid>
+        </Grid>
     );
 
     const userInfo = user && renderUserInfo();
