@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import apiRequest from '../../service/api/ApiRequest';
 import { File } from '../../service/api/File';
+import { Button, FormControl, Input } from '@mui/material';
 function FileUpload({ onUpload }) {
     const [file, setFile] = useState(null);
     const fileInputRef = useRef(null);
@@ -35,10 +36,19 @@ function FileUpload({ onUpload }) {
     };
 
     return (
-        <div>
-            <input ref={fileInputRef} type="file" onChange={handleFileChange} required />
-            <button onClick={handleUpload}>Upload</button>
-        </div>
+        <FormControl>
+            {/* <InputLabel htmlFor="file-input">Upload File</InputLabel>
+            <InputLabel htmlFor="file-input"></InputLabel> */}
+            <Input
+                lang='en'
+                id="file-input"
+                type="file"
+                inputRef={fileInputRef}
+                onChange={handleFileChange}
+                required
+            />
+            <Button variant="contained" color="primary" onClick={handleUpload}>Upload</Button>
+        </FormControl>
     );
 }
 

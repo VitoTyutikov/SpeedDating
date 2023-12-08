@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import UserCard from './UserCard'
+import  { useEffect, useState } from 'react';
+import UserCard from './UserCard';
 import { User } from '../../service/api/User';
 import { CookiesService } from '../../service/cookies/Cookies';
 import apiRequest from '../../service/api/ApiRequest';
+import Grid from '@mui/material/Grid';
 const UserList = () => {
     const [users, setUsers] = useState([]);
 
@@ -54,17 +55,18 @@ const UserList = () => {
 
 
     return (
-        <div className="userList">
+        <Grid container spacing={2} justifyContent="center">
             {users.filter(user => user.id !== CookiesService.getUserId()).map(user => (
-                <UserCard
-                    key={user.id}
-                    user={user}
-                    onChangeRole={handleRoleChange}
-                    onToggleNonLocked={handleToggleNonLocked}
-                    onDeleteUser={handleDeleteUser}
-                />
+                <Grid item xs={11} key={user.id}>
+                    <UserCard
+                        user={user}
+                        onChangeRole={handleRoleChange}
+                        onToggleNonLocked={handleToggleNonLocked}
+                        onDeleteUser={handleDeleteUser}
+                    />
+                </Grid>
             ))}
-        </div>
+        </Grid>
     );
 };
 

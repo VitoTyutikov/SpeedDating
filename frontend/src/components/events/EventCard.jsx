@@ -1,10 +1,10 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
-import styles from './EventCard.module.css';
-import { Event } from '../../../service/api/Events';
+import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import { CookiesService } from '../../../service/cookies/Cookies';
-import apiRequest from '../../../service/api/ApiRequest';
+import { Event } from '../../service/api/Events';
+import { CookiesService } from '../../service/cookies/Cookies';
+import apiRequest from '../../service/api/ApiRequest';
+
 function EventCard({ event }) {
   let dateStr = event.eventDateTime;
   let dateParts = dateStr.split("T");
@@ -44,10 +44,14 @@ function EventCard({ event }) {
 
 
   const handleClick = () => {
+
     apiRequest(Event.registerToEvent, event.id)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        if (response.status === 402) {
+          throw new Error('You doesn\'t have enough balance');
+        }
+        else if (!response.ok) {
+          throw new Error('Network response was not ok. Try again');
         }
         return response.json();
       })
@@ -55,10 +59,10 @@ function EventCard({ event }) {
         setIsRegistered(true);
       })
       .catch((error) => {
-        console.error('Register to event failed:', error);
-        alert('Register to event failed. Please try again.');
+        // console.error('Register to event failed:', error);
+        alert(error);
       });
-      handleEgtRegisteredUsers();
+    handleEgtRegisteredUsers();
   };
   const [showRegisteredUsers, setShowRegisteredUsers] = useState(false);
   const handleEgtRegisteredUsers = () => {
@@ -68,29 +72,38 @@ function EventCard({ event }) {
 
 
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <h2>{event.title} {!isFuture && <span className="ended-text">(Ended)</span>}</h2>
-        <p>{dateObj.toLocaleString()}</p>
-        <p>{event.address}</p>
-        <p>{`Price: $${event.price}`}</p>
-        {(isFuture && !isRegistered && <button onClick={handleClick}>Register to events</button>) || (!isFuture && <br />)}
-         <button onClick={handleEgtRegisteredUsers}>Show Registered Users</button>
-      </div>
+    <Grid item xs={11}>
+      <Card>
+        <CardContent>
+          <Typography variant="h5">
+            {event.title} {!isFuture && <span className="ended-text">(Ended)</span>}
+          </Typography>
+          <Typography>{dateObj.toLocaleString()}</Typography>
+          <Typography>{event.address}</Typography>
+          <Typography>{`Price: $${event.price}`}</Typography>
+          {isFuture && !isRegistered && (
+            <Button variant="contained" onClick={handleClick}>Register to event</Button>
+          )}
+          <Button variant="contained" onClick={handleEgtRegisteredUsers}>Show Registered Users</Button>
+        </CardContent>
+      </Card>
       {showRegisteredUsers && (
-        <div className={styles.registeredUsers}>
-          <h3>Registered Users</h3>
-          <ul>
-            {registeredUsers.map((user) => (
-              <li key={user.id}>
-                <NavLink to={CookiesService.getUserId() === user.id ? '/profile' : `/user/${user.id}`}>{CookiesService.getUserId() === user.id ? 'You' : user.username}</NavLink>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Card>
+          <CardContent>
+            <Typography variant="h6">Registered Users</Typography>
+            <ul>
+              {registeredUsers.map((user) => (
+                <li key={user.id}>
+                  <NavLink to={CookiesService.getUserId() === user.id ? '/profile' : `/user/${user.id}`}>
+                    {CookiesService.getUserId() === user.id ? 'You' : user.username}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
       )}
-    </div>
-
+    </Grid>
   );
 }
 

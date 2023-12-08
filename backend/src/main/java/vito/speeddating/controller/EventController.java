@@ -70,8 +70,14 @@ public class EventController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @RequestMapping(value = "/registerUserToEvent", method = RequestMethod.POST)
     public ResponseEntity<Boolean> registerUserToEvent(@RequestBody RegisterUserToEventDTO registerUserToEventDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                eventService.addUserToEvent(registerUserToEventDTO.getUserId(), registerUserToEventDTO.getEventId()));
+        boolean event;
+        try {
+            event = eventService.addUserToEvent(registerUserToEventDTO.getUserId(),
+                    registerUserToEventDTO.getEventId());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(event);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")

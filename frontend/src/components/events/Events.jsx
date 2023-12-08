@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import EventCard from './eventCard/EventCard';
-import './Events.module.css'
-import EventRegister from './eventRegister/EventRegister';
+import { useState, useEffect } from 'react';
+import EventCard from './EventCard';
+import EventRegister from './EventRegister';
 import useLoggedIn from '../../hooks/useLoggedIn';
 import useEvents from '../../hooks/useEvents';
-
+import { Grid } from '@mui/material';
 function Events() {
   const fetchedEvents = useEvents();
   const isLoggedIn = useLoggedIn();
@@ -18,15 +17,18 @@ function Events() {
     setEventsList([...eventsList, newEvent]);
   };
 
-  const items = eventsList.map((event) => (
-    <EventCard key={event.id} event={event} />
-  ));
 
   return (
-    <div className="container">
-      {items}
-      {isLoggedIn && <EventRegister onAddEvent={handleAddEvent} />}
-    </div>
+    <Grid container spacing={2} justifyContent="center">
+  {eventsList.map((event) => (
+    <EventCard key={event.id} event={event} />
+  ))}
+  {isLoggedIn && (
+    <Grid item xs={12}>
+      <EventRegister onAddEvent={handleAddEvent} />
+    </Grid>
+  )}
+</Grid>
   );
 }
 

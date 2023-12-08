@@ -1,8 +1,10 @@
+import { Typography } from '@mui/material';
+
 function UserProfileDetail({ label, value }) {
     return (
-        <p>
+        <Typography>
             <strong>{label}:</strong> {value}
-        </p>
+        </Typography>
     );
 }
 export default UserProfileDetail;
