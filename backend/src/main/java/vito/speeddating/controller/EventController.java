@@ -95,4 +95,10 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getUsersRegisteredToEvent(eventId));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+        eventService.delete(eventService.findById(id));
+    }
+
 }

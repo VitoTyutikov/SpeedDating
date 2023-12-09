@@ -20,6 +20,7 @@ import vito.speeddating.dto.ChangeRoleDTO;
 import vito.speeddating.dto.ChangeUserNonBlockDTO;
 import vito.speeddating.dto.UserDTO;
 import vito.speeddating.entity.UserEntity;
+import vito.speeddating.service.EventService;
 import vito.speeddating.service.UserService;
 
 @RequestMapping("/user")
@@ -27,9 +28,11 @@ import vito.speeddating.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final EventService eventService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, EventService eventService) {
         this.userService = userService;
+        this.eventService = eventService;
     }
 
     public String getCurrentUserLogin() {
@@ -63,9 +66,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerNewUser(userDto));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id) {
+        eventService.unregisterUserFromAllEvents(id);
         userService.delete(userService.findById(id));
     }
 

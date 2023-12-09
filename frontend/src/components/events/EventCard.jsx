@@ -44,7 +44,6 @@ function EventCard({ event }) {
 
 
   const handleClick = () => {
-
     apiRequest(Event.registerToEvent, event.id)
       .then((response) => {
         if (response.status === 402) {
@@ -59,18 +58,32 @@ function EventCard({ event }) {
         setIsRegistered(true);
       })
       .catch((error) => {
-        // console.error('Register to event failed:', error);
         alert(error);
       });
     handleEgtRegisteredUsers();
   };
+
   const [showRegisteredUsers, setShowRegisteredUsers] = useState(false);
+
   const handleEgtRegisteredUsers = () => {
     fetchRegisteredUsers();
     setShowRegisteredUsers(!showRegisteredUsers);
   }
 
+  const handleDeleteEvent = () => {
+    apiRequest(Event.deleteEvent, event.id)
+      .then((response) => {
 
+      })
+      .then((data) => {
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error('Error deleting event:', error);
+      });
+  }
+
+  const isAdmin = CookiesService.getRoles() === '[ROLE_ADMIN]'
   return (
     <Grid item xs={11}>
       <Card>
@@ -85,7 +98,13 @@ function EventCard({ event }) {
             <Button variant="contained" onClick={handleClick}>Register to event</Button>
           )}
           <Button variant="contained" onClick={handleEgtRegisteredUsers}>Show Registered Users</Button>
+          {isAdmin && (
+            <Button variant="contained" color="error" onClick={handleDeleteEvent}>
+              Delete Event
+            </Button>
+          )}
         </CardContent>
+
       </Card>
       {showRegisteredUsers && (
         <Card>

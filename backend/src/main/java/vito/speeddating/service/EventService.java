@@ -96,4 +96,14 @@ public class EventService {
         EventEntity event = eventRepository.findById(eventId).orElse(null);
         return event.getRegisteredUsers();
     }
+
+
+    @Transactional
+    public void unregisterUserFromAllEvents(Long id) {
+        List<EventEntity> events = eventRepository.findAll();
+        for (EventEntity event : events) {
+            event.getRegisteredUsers().remove(userService.findById(id));
+            eventRepository.save(event);
+        }
+    }
 }

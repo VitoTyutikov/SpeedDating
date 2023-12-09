@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import UserCard from './UserCard';
 import { User } from '../../service/api/User';
 import { CookiesService } from '../../service/cookies/Cookies';
@@ -33,7 +33,6 @@ const UserList = () => {
 
     const handleToggleNonLocked = (userId, nonLocked) => {
         apiRequest(User.updateNonLocked, userId, nonLocked);
-        
     };
 
     const handleDeleteUser = (userId) => {
@@ -42,11 +41,18 @@ const UserList = () => {
                 if (!response.ok) {
                     throw new Error('Failed to delete user');
                 }
-                return User.getAllUsers;
             })
-            .then(response => response.json())
-            .then(data => {
-                setUsers(data);
+            .then(response => {
+                apiRequest(User.getAllUsers)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch users');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        setUsers(data);
+                    })
             })
             .catch(error => {
                 console.error('Error in handleDeleteUser:', error);

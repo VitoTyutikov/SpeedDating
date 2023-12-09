@@ -87,6 +87,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void delete(UserEntity user) {
+        
         userRepository.delete(user);
     }
 

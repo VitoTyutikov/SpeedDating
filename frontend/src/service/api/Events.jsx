@@ -85,6 +85,16 @@ function getUsersRegisteredToEvent(eventId) {
     })
 }
 
+function deleteEvent(eventId) {
+    return fetch(`${API_BASE_URL}/events/delete/` + eventId, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ` + CookiesService.getAccessToken(),
+            'Content-Type': 'application/json',
+        },
+    })
+}
+
 export const Event = {
     getAllEvents,
     getActiveEvents,
@@ -93,5 +103,6 @@ export const Event = {
     addEvent,
     registerToEvent,
     checkUserRegisteredToEvent,
-    getUsersRegisteredToEvent
+    getUsersRegisteredToEvent,
+    deleteEvent
 }
