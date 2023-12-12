@@ -4,7 +4,13 @@ import { User } from '../../service/api/User';
 import { CookiesService } from '../../service/cookies/Cookies';
 import apiRequest from '../../service/api/ApiRequest';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router-dom';
 const UserList = () => {
+    const navigate = useNavigate();
+    if (CookiesService.getRoles() !== '[ROLE_ADMIN]') {
+        navigate('/profile')
+    }
+
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
