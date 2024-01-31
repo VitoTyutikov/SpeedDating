@@ -1,5 +1,6 @@
 package vito.speeddating;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -24,6 +25,7 @@ import vito.speeddating.entity.UserEntity;
 import vito.speeddating.repository.UserRepository;
 import vito.speeddating.service.UserService;
 
+
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
@@ -43,18 +45,23 @@ class UserServiceTest {
         userDto.setUsername("testuser");
         userDto.setDateOfBirth("2002-09-02");
 
+
         when(userRepository.findByEmail(userDto.getEmail())).thenReturn(Optional.empty());
         when(userRepository.findByUsername(userDto.getUsername())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(userDto.getPassword())).thenReturn("encodedPassword");
 
+
         UserEntity result = userService.registerNewUser(userDto);
+
 
         assertNotNull(result);
         assertEquals(userDto.getUsername(), result.getUsername());
         assertEquals(userDto.getFirstName(), result.getFirstName());
 
+
         verify(userRepository, times(1)).save(any(UserEntity.class));
     }
+
 
     @Test
     void testUpdateUserNotFound() {
@@ -71,6 +78,8 @@ class UserServiceTest {
         verify(userRepository, never()).save(any(UserEntity.class));
     }
 
+
+
     @Test
     void updateBalance() {
         AddBalanceDTO addBalanceDTO = new AddBalanceDTO();
@@ -83,11 +92,13 @@ class UserServiceTest {
 
         when(userRepository.findById(addBalanceDTO.getUserId())).thenReturn(Optional.of(existingUserEntity));
 
+
         UserEntity result = userService.updateBalance(addBalanceDTO);
 
         assertNotNull(result, "Expected a non-null result");
         assertEquals(150.0, result.getBalance(), "Balance should be updated correctly");
-
+        
         verify(userRepository, times(1)).save(existingUserEntity);
     }
 }
+
